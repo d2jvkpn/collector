@@ -11,6 +11,7 @@ import (
 
 var (
 	_TestTopic  string
+	_TestKey    string
 	_TestAddrs  []string
 	_TestConfig *sarama.Config
 )
@@ -30,6 +31,7 @@ func TestKafka(t *testing.T) {
 	)
 
 	_TestTopic = "collector"
+	_TestKey = "key0001"
 	_TestAddrs = []string{"localhost:29091"}
 	_TestConfig = sarama.NewConfig()
 
@@ -42,20 +44,16 @@ func TestKafka(t *testing.T) {
 	}
 
 	for i := 0; i < 5; i++ {
-		data := map[string]any{
-			"serviceName":    "test01",
-			"serviceVersion": "0.1.0",
-			"eventId":        fmt.Sprintf("evnet%40d", i+1),
-			"eventAt":        time.Now(),
-			"bizName":        "biz0001",
-			"data":           map[string]string{"hello": "world"},
-		}
+		data := NewData("test01", "biz0001").
+			WithEventId(fmt.Sprintf("evnet%40d", i+1)).
+			WithSvcV("0.1.0").
+			WithData(map[string]string{"hello": "world"})
 
 		msg, _ := json.Marshal(data)
 
 		pmsg1 := sarama.ProducerMessage{
 			Topic: _TestTopic,
-			Key:   sarama.StringEncoder("key0001"),
+			Key:   sarama.StringEncoder(_TestKey),
 			Value: sarama.ByteEncoder(msg),
 		}
 

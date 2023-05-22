@@ -41,8 +41,18 @@ func NewData(serviceName, bizName string) *Data {
 	}
 }
 
+func (data *Data) WithSvcV(v string) *Data {
+	data.ServiceVersion = v
+	return data
+}
+
 func (data *Data) WithEventId(eid string) *Data {
 	data.EventId = eid
+	return data
+}
+
+func (data *Data) WithBizV(v string) *Data {
+	data.BizVersion = v
 	return data
 }
 
