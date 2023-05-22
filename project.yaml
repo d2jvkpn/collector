@@ -1,0 +1,20 @@
+project: collector
+repository: https://github.com/d2jvkpn/collctor
+version: 0.1.0
+
+# configs/{{.APP_ENV}}.yaml
+config: |
+  log: { path: logs/collector.log, size_mb: 256 }
+  #
+  mongodb:
+    uri: mongodb://USER:PASSWORD@localhost:27017
+    min_pool_size: 20
+    max_pool_size: 500
+    timeout_secs: 5
+    db: collector
+  #
+  kafka:
+    addrs: [localhost:29091]
+    version: 3.4.0
+    group_id: default
+    topic: collector

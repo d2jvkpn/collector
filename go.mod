@@ -4,6 +4,7 @@ go 1.20
 
 require (
 	github.com/Shopify/sarama v1.38.1
+	github.com/d2jvkpn/gotk v0.0.0-20230518073325-810653b3da56
 	github.com/d2jvkpn/gotk/impls v0.0.0-20230518073325-810653b3da56
 	github.com/spf13/viper v1.15.0
 	go.mongodb.org/mongo-driver v1.11.6
@@ -67,6 +68,7 @@ require (
 	go.uber.org/atomic v1.9.0 // indirect
 	golang.org/x/arch v0.0.0-20210923205945-b76863e36670 // indirect
 	golang.org/x/crypto v0.5.0 // indirect
+	golang.org/x/exp v0.0.0-20230425010034-47ecfdc1ba53 // indirect
 	golang.org/x/net v0.7.0 // indirect
 	golang.org/x/sync v0.1.0 // indirect
 	golang.org/x/sys v0.5.0 // indirect

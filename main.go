@@ -1,6 +1,8 @@
 package main
 
 import (
+	"bytes"
+	_ "embed"
 	"flag"
 	"fmt"
 	"log"
@@ -9,7 +11,22 @@ import (
 	"syscall"
 
 	"github.com/d2jvkpn/collector/internal"
+	"github.com/d2jvkpn/gotk"
+	"github.com/spf13/viper"
 )
+
+var (
+	//go:embed project.yaml
+	_ProjectBts []byte
+	_Project    *viper.Viper
+)
+
+func init() {
+	gotk.RegisterLogPrinter()
+
+	_Project = viper.New()
+	_Project.SetConfigType("yaml")
+}
 
 func main() {
 	var (
@@ -18,7 +35,20 @@ func main() {
 		quit   chan os.Signal
 	)
 
+	if err = _Project.ReadConfig(bytes.NewReader(_ProjectBts)); err != nil {
+		log.Fatalln(err)
+	}
+
 	flag.StringVar(&config, "config", "configs/local.yaml", "configuration file path")
+
+	flag.Usage = func() {
+		output := flag.CommandLine.Output()
+
+		fmt.Fprintf(output, "Usage:\n")
+		flag.PrintDefaults()
+		fmt.Fprintf(output, "\nConfiguration:\n```yaml\n%s```\n", _Project.GetString("config"))
+	}
+
 	flag.Parse()
 
 	if err = internal.Load(config); err != nil {
