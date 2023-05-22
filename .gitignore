@@ -25,3 +25,4 @@ go.work
 logs/
 configs/
 wk*/
+target/
