@@ -11,3 +11,8 @@ build:
 	echo ">>> git branch: $(git_branch), git time: $(git_time), build time: $(build_time)"
 	mkdir -p target
 	go build -o target/main main.go
+
+run:
+	mkdir -p target
+	go build -o target/main main.go
+	./target/main

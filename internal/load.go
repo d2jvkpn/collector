@@ -3,7 +3,7 @@ package internal
 import (
 	"context"
 	"fmt"
-	"time"
+	// "time"
 
 	"github.com/d2jvkpn/collector/pkg/kafka"
 	"github.com/d2jvkpn/collector/pkg/wrap"
@@ -14,6 +14,12 @@ import (
 
 func Load(confg string) (err error) {
 	var vp *viper.Viper
+
+	defer func() {
+		if err != nil {
+			_ = shutdownHandler()
+		}
+	}()
 
 	vp = viper.New()
 	vp.SetConfigType("yaml")
@@ -37,7 +43,15 @@ func Load(confg string) (err error) {
 		return fmt.Errorf("MongoClient: %w", err)
 	}
 
-	if _Handler, err = NewHandler(1000, time.Minute); err != nil {
+	count := vp.GetInt("bp.count")
+	if count <= 0 {
+		return fmt.Errorf("invalid bp.count")
+	}
+	interval := vp.GetDuration("bp.interval")
+	if interval <= 0 {
+		return fmt.Errorf("invalid bp.interval")
+	}
+	if _Handler, err = NewHandler(count, interval); err != nil {
 		return fmt.Errorf("NewHandler: %w", err)
 	}
 

@@ -7,15 +7,25 @@ import (
 	"time"
 )
 
-func Run() (err error) {
-	if err = _KafkaHandler.Consume(); err != nil {
-		return err
+func Run(addr string) (shutdown func() error, err error) {
+	var shutdownHttp func() error
+
+	if shutdownHttp, err = ServeHttp(addr); err != nil {
+		return nil, err
 	}
 
-	return nil
+	if err = _KafkaHandler.Consume(); err != nil {
+		return nil, errors.Join(err, shutdownHandler(), shutdownHttp())
+	}
+
+	shutdown = func() error {
+		return errors.Join(shutdownHandler(), shutdownHttp())
+	}
+
+	return shutdown, nil
 }
 
-func Shutdown() (err error) {
+func shutdownHandler() (err error) {
 	var e1, e2, e3 error
 
 	if _KafkaHandler != nil {

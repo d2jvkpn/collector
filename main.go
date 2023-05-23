@@ -30,9 +30,11 @@ func init() {
 
 func main() {
 	var (
-		config string
-		err    error
-		quit   chan os.Signal
+		config   string
+		addr     string
+		err      error
+		quit     chan os.Signal
+		shutdown func() error
 	)
 
 	if err = _Project.ReadConfig(bytes.NewReader(_ProjectBts)); err != nil {
@@ -40,6 +42,7 @@ func main() {
 	}
 
 	flag.StringVar(&config, "config", "configs/local.yaml", "configuration file path")
+	flag.StringVar(&addr, "addr", "0.0.0.0:8081", "prometheus metrics http server")
 
 	flag.Usage = func() {
 		output := flag.CommandLine.Output()
@@ -52,15 +55,13 @@ func main() {
 	flag.Parse()
 
 	if err = internal.Load(config); err != nil {
-		_ = internal.Shutdown()
 		log.Fatalln(err)
 	}
 
-	if err = internal.Run(); err != nil {
-		_ = internal.Shutdown()
+	if shutdown, err = internal.Run(addr); err != nil {
 		log.Fatalln(err)
 	}
-	log.Println(">>> The server is starting...")
+	log.Printf(">>> The server is starting, http listening on %s...\n", addr)
 
 	quit = make(chan os.Signal, 1)
 	signal.Notify(quit, os.Interrupt, syscall.SIGTERM, syscall.SIGUSR2)
@@ -68,7 +69,7 @@ func main() {
 	select {
 	case <-quit:
 		fmt.Println("...")
-		err = internal.Shutdown()
+		err = shutdown()
 		log.Printf("<<< Exit\n")
 	}
 

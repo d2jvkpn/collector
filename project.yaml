@@ -18,3 +18,7 @@ config: |
     version: 3.4.0
     group_id: default
     topic: collector
+  #
+  bp:
+    count: 1000
+    interval: 1m
