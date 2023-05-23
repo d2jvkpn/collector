@@ -4,7 +4,7 @@ go 1.20
 
 require (
 	github.com/Shopify/sarama v1.38.1
-	github.com/d2jvkpn/gotk v0.0.0-20230518073325-810653b3da56
+	github.com/d2jvkpn/gotk v0.0.0-20230523025123-82bbcb769689
 	github.com/d2jvkpn/gotk/impls v0.0.0-20230518073325-810653b3da56
 	github.com/prometheus/client_golang v1.15.1
 	github.com/spf13/viper v1.15.0

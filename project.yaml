@@ -4,7 +4,9 @@ version: 0.1.0
 
 # configs/{{.APP_ENV}}.yaml
 config: |
-  log: { path: logs/collector.log, size_mb: 256 }
+  log:
+    path: logs/collector.log
+    size_mb: 256
   #
   mongodb:
     uri: mongodb://USER:PASSWORD@localhost:27017

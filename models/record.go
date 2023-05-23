@@ -1,4 +1,4 @@
-package internal
+package models
 
 import (
 	// "fmt"
@@ -41,27 +41,29 @@ func NewData(serviceName, bizName string) *Data {
 	}
 }
 
-func (data *Data) WithSvcV(v string) *Data {
-	data.ServiceVersion = v
+// update ServiceVersion
+func (data *Data) WithSvcV(version string) *Data {
+	data.ServiceVersion = version
 	return data
 }
 
-func (data *Data) WithEventId(eid string) *Data {
-	data.EventId = eid
+func (data *Data) WithEventId(eventId string) *Data {
+	data.EventId = eventId
 	return data
 }
 
-func (data *Data) WithBizV(v string) *Data {
-	data.BizVersion = v
+// update BizVersion
+func (data *Data) WithBizV(version string) *Data {
+	data.BizVersion = version
 	return data
 }
 
-func (data *Data) WithBindId(bId string) *Data {
-	data.BindId = bId
+func (data *Data) WithBindId(bindId string) *Data {
+	data.BindId = bindId
 	return data
 }
 
-func (data *Data) WithData(d any) *Data {
-	data.Data = d
-	return data
+func (item *Data) WithData(data any) *Data {
+	item.Data = data
+	return item
 }

@@ -17,11 +17,8 @@ function onExit {
 }
 trap onExit EXIT
 
-[[ "$BuildLocal" != "true" ]] && \
-{
-  git checkout $git_branch
-  git pull --no-edit
-}
+git checkout $git_branch
+[[ "$BuildLocal" != "true" ]] && git pull --no-edit
 
 build_time=$(date +'%FT%T%:z')
 git_branch="$(git rev-parse --abbrev-ref HEAD)" # current branch

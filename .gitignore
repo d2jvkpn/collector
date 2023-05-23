@@ -26,3 +26,4 @@ logs/
 configs/
 wk*/
 target/
+docker-compose.yaml

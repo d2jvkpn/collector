@@ -1,66 +1,79 @@
 package internal
 
 import (
-	"encoding/json"
+	"context"
+	"flag"
 	"fmt"
+	"os"
 	"testing"
 	"time"
 
+	"github.com/d2jvkpn/collector/pkg/wrap"
+
 	"github.com/Shopify/sarama"
+	"github.com/d2jvkpn/gotk"
+	"github.com/spf13/viper"
 )
 
 var (
-	_TestTopic  string
-	_TestKey    string
-	_TestAddrs  []string
-	_TestConfig *sarama.Config
+	_TestTopic       string
+	_TestKey         string
+	_TestAddrs       []string
+	_TestFlag        *flag.FlagSet
+	_TestCtx         context.Context
+	_TestConfig      *viper.Viper
+	_TestKafkaConfig *sarama.Config
 )
 
-func TestTimeFormat(t *testing.T) {
+func TestFormat(t *testing.T) {
 	now := time.Now()
 	at := now.UTC()
+
 	fmt.Println(">>>", at.Month())
-	s := fmt.Sprintf("%dS%d", at.Year(), at.Month()%3)
-	fmt.Println("   ", s)
+	fmt.Println("   ", fmt.Sprintf("%dS%d", at.Year(), at.Month()%3))
+
+	fmt.Printf("~~~ %04d\n", 3)
 }
 
-func TestKafka(t *testing.T) {
-	var (
-		err      error
-		producer sarama.AsyncProducer
-	)
-
+func TestMain(m *testing.M) {
 	_TestTopic = "collector"
 	_TestKey = "key0001"
 	_TestAddrs = []string{"localhost:29091"}
-	_TestConfig = sarama.NewConfig()
+	_TestCtx = context.Background()
 
-	if _TestConfig.Version, err = sarama.ParseKafkaVersion("3.4.0"); err != nil {
-		t.Fatal(err)
-	}
+	var (
+		configFile string
+		err        error
+	)
 
-	if producer, err = sarama.NewAsyncProducer(_TestAddrs, _TestConfig); err != nil {
-		t.Fatal(err)
-	}
-
-	for i := 0; i < 5; i++ {
-		data := NewData("test01", "biz0001").
-			WithEventId(fmt.Sprintf("evnet%40d", i+1)).
-			WithSvcV("0.1.0").
-			WithData(map[string]string{"hello": "world"})
-
-		msg, _ := json.Marshal(data)
-
-		pmsg1 := sarama.ProducerMessage{
-			Topic: _TestTopic,
-			Key:   sarama.StringEncoder(_TestKey),
-			Value: sarama.ByteEncoder(msg),
+	defer func() {
+		if err != nil {
+			fmt.Printf("!!! TestMain: %v\n", err)
+			os.Exit(1)
 		}
+	}()
 
-		producer.Input() <- &pmsg1
+	_TestFlag = flag.NewFlagSet("testFlag", flag.ExitOnError)
+	flag.Parse() // must do
+
+	_TestFlag.StringVar(&configFile, "config", "configs/local.yaml", "config filepath")
+	if configFile, err = gotk.RootFile(configFile); err != nil {
+		return
 	}
 
-	if err = producer.Close(); err != nil {
-		t.Fatal(err)
+	if _TestConfig, err = wrap.LoadYamlConfig(configFile, "TestConfig"); err != nil {
+		return
 	}
+
+	_TestFlag.Parse(flag.Args())
+
+	_TestKafkaConfig = sarama.NewConfig()
+	_TestKafkaConfig.Version, err = sarama.ParseKafkaVersion(_TestConfig.GetString("kafka.version"))
+	if err != nil {
+		return
+	}
+
+	fmt.Printf("~~~ config %s\n", configFile)
+
+	m.Run()
 }

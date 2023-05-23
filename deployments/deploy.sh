@@ -4,6 +4,7 @@ _wd=$(pwd)
 _path=$(dirname $0 | xargs -i readlink -f {})
 
 name=collector
+mkdir -p configs logs data/mongo
 
 export TAG=$1 APP_ENV=$2 PORT=$3
 envsubst < ${_path}/deploy.yaml > docker-compose.yaml

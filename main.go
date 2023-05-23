@@ -33,6 +33,7 @@ func main() {
 		config   string
 		addr     string
 		err      error
+		meta     map[string]any
 		quit     chan os.Signal
 		shutdown func() error
 	)
@@ -40,6 +41,10 @@ func main() {
 	if err = _Project.ReadConfig(bytes.NewReader(_ProjectBts)); err != nil {
 		log.Fatalln(err)
 	}
+
+	meta = gotk.BuildInfo()
+	meta["project"] = _Project.GetString("project")
+	meta["version"] = _Project.GetString("version")
 
 	flag.StringVar(&config, "config", "configs/local.yaml", "configuration file path")
 	flag.StringVar(&addr, "addr", "0.0.0.0:5011", "prometheus metrics http server")
@@ -50,6 +55,7 @@ func main() {
 		fmt.Fprintf(output, "Usage:\n")
 		flag.PrintDefaults()
 		fmt.Fprintf(output, "\nConfiguration:\n```yaml\n%s```\n", _Project.GetString("config"))
+		fmt.Fprintf(output, "\nBuild:\n```text\n%s\n```\n", gotk.BuildInfoText(meta))
 	}
 
 	flag.Parse()
@@ -70,10 +76,11 @@ func main() {
 	case <-quit:
 		fmt.Println("...")
 		err = shutdown()
-		log.Printf("<<< Exit\n")
 	}
 
 	if err != nil {
 		log.Fatalln(err)
+	} else {
+		log.Println("<<< Exit")
 	}
 }

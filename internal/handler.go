@@ -6,6 +6,8 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/d2jvkpn/collector/models"
+
 	"github.com/Shopify/sarama"
 	"github.com/d2jvkpn/gotk/impls"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -13,7 +15,7 @@ import (
 )
 
 type Handler struct {
-	bp     *impls.BatchProcess[DataMsg]
+	bp     *impls.BatchProcess[models.DataMsg]
 	logger *zap.Logger
 	db     *mongo.Database
 }
@@ -21,7 +23,7 @@ type Handler struct {
 func NewHandler(count int, duration time.Duration) (handler *Handler, err error) {
 	handler = &Handler{}
 
-	handler.bp, err = impls.NewBatchProcess[DataMsg](count, duration, handler.InsertMany)
+	handler.bp, err = impls.NewBatchProcess[models.DataMsg](count, duration, handler.InsertMany)
 	if err != nil {
 		return nil, err
 	}
@@ -62,7 +64,7 @@ func (handler *Handler) Ok() (err error) {
 func (handler *Handler) Handle(msg *sarama.ConsumerMessage) {
 	var (
 		err  error
-		data DataMsg
+		data models.DataMsg
 	)
 
 	data.Fields = fieldsFromMsg(msg)
@@ -78,7 +80,7 @@ func (handler *Handler) Handle(msg *sarama.ConsumerMessage) {
 	}
 }
 
-func (handler *Handler) InsertMany(dataList []DataMsg) {
+func (handler *Handler) InsertMany(dataList []models.DataMsg) {
 	var (
 		err       error
 		createdAt time.Time
@@ -90,7 +92,7 @@ func (handler *Handler) InsertMany(dataList []DataMsg) {
 	items = make([]any, 0, len(dataList))
 
 	for i := range dataList {
-		items = append(items, Record{
+		items = append(items, models.Record{
 			CreatedAt: createdAt,
 			Data:      dataList[i].Data,
 		})

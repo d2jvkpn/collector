@@ -2,7 +2,6 @@ package wrap
 
 import (
 	// "fmt"
-	// "log"
 	"net"
 
 	"github.com/prometheus/client_golang/prometheus/promhttp"
