@@ -1,0 +1,23 @@
+version: '3'
+
+services:
+  collector:
+    image: registry.cim.4dpoc.com/collector:${TAG}
+    container_name: collector_${APP_ENV}
+    restart: always
+    # depends_on: ["mysql"]
+    # network_mode: bridge
+    networks: ["net"]
+    ports: ["${PORT}:${PORT}"]
+    environment: ["TZ=Asia/Shanghai"]
+    volumes:
+    - ./configs/:/home/hello/collector/configs/
+    - ./logs/:/home/hello/collector/logs/
+    # - ./data/:/home/hello/collector/data/
+    command: ["./main", "--config=configs/${APP_ENV}.yaml", "-addr=0.0.0.0:${PORT}", "-release"]
+
+networks:
+  net:
+    name: collector_${APP_ENV}
+    driver: bridge
+    external: false

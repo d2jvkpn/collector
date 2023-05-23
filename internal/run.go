@@ -5,6 +5,8 @@ import (
 	"context"
 	"errors"
 	"time"
+
+	"github.com/d2jvkpn/collector/pkg/wrap"
 )
 
 func Run(addr string) (shutdown func() error, err error) {
@@ -16,7 +18,7 @@ func Run(addr string) (shutdown func() error, err error) {
 		}
 	}()
 
-	if shutdownHttp, err = ServeHttp(addr); err != nil {
+	if shutdownHttp, err = wrap.PromHttp(addr); err != nil {
 		return nil, err
 	}
 	defer func() {

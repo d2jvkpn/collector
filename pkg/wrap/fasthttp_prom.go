@@ -1,4 +1,4 @@
-package internal
+package wrap
 
 import (
 	// "fmt"
@@ -10,7 +10,7 @@ import (
 	"github.com/valyala/fasthttp/fasthttpadaptor"
 )
 
-func ServeHttp(addr string) (shutdown func() error, err error) {
+func PromHttp(addr string) (shutdown func() error, err error) {
 	var (
 		listener net.Listener
 		server   *fasthttp.Server

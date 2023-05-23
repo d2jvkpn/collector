@@ -42,7 +42,7 @@ func main() {
 	}
 
 	flag.StringVar(&config, "config", "configs/local.yaml", "configuration file path")
-	flag.StringVar(&addr, "addr", "0.0.0.0:8081", "prometheus metrics http server")
+	flag.StringVar(&addr, "addr", "0.0.0.0:5011", "prometheus metrics http server")
 
 	flag.Usage = func() {
 		output := flag.CommandLine.Output()

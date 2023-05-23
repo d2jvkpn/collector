@@ -1,0 +1,24 @@
+version: '3'
+
+services:
+  collector:
+    image: registry.cn-shanghai.aliyuncs.com/d2jvkpn/collector:dev
+    container_name: collector_dev
+    restart: always
+    # depends_on: ["mysql"]
+    # network_mode: bridge
+    networks: ["net"]
+    # network_mode: host
+    ports: ["3022:3022"]
+    environment: ["TZ=Asia/Shanghai"]
+    volumes:
+    - ./configs/:/home/hello/collector/configs/
+    - ./logs/:/home/hello/collector/logs/
+    # - ./data/:/home/hello/collector/data/
+    command: ["./main", "--config=configs/dev.yaml", "--addr=:3022", "--release"]
+
+networks:
+  net:
+    name: collector_dev
+    driver: bridge
+    external: false
