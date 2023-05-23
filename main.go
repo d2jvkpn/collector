@@ -1,7 +1,6 @@
 package main
 
 import (
-	"bytes"
 	_ "embed"
 	"flag"
 	"fmt"
@@ -11,21 +10,19 @@ import (
 	"syscall"
 
 	"github.com/d2jvkpn/collector/internal"
+	"github.com/d2jvkpn/collector/pkg/wrap"
+
 	"github.com/d2jvkpn/gotk"
 	"github.com/spf13/viper"
 )
 
 var (
 	//go:embed project.yaml
-	_ProjectBts []byte
-	_Project    *viper.Viper
+	_Project []byte
 )
 
 func init() {
 	gotk.RegisterLogPrinter()
-
-	_Project = viper.New()
-	_Project.SetConfigType("yaml")
 }
 
 func main() {
@@ -36,15 +33,16 @@ func main() {
 		meta     map[string]any
 		quit     chan os.Signal
 		shutdown func() error
+		project  *viper.Viper
 	)
 
-	if err = _Project.ReadConfig(bytes.NewReader(_ProjectBts)); err != nil {
+	if project, err = wrap.LoadYamlBytes(_Project); err != nil {
 		log.Fatalln(err)
 	}
 
 	meta = gotk.BuildInfo()
-	meta["project"] = _Project.GetString("project")
-	meta["version"] = _Project.GetString("version")
+	meta["project"] = project.GetString("project")
+	meta["version"] = project.GetString("version")
 
 	flag.StringVar(&config, "config", "configs/local.yaml", "configuration file path")
 	flag.StringVar(&addr, "addr", "0.0.0.0:5011", "prometheus metrics http server")
@@ -54,7 +52,7 @@ func main() {
 
 		fmt.Fprintf(output, "Usage:\n")
 		flag.PrintDefaults()
-		fmt.Fprintf(output, "\nConfiguration:\n```yaml\n%s```\n", _Project.GetString("config"))
+		fmt.Fprintf(output, "\nConfiguration:\n```yaml\n%s```\n", project.GetString("config"))
 		fmt.Fprintf(output, "\nBuild:\n```text\n%s\n```\n", gotk.BuildInfoText(meta))
 	}
 
