@@ -12,6 +12,19 @@ build:
 	mkdir -p target
 	go build -o target/main main.go
 
+create-db:
+	docker run --name mongon_db -p 127.0.0.1:27017:27017 -e MONGO_INITDB_ROOT_USERNAME=root \
+	  -e MONGO_INITDB_ROOT_PASSWORD=root -d mongo:5
+	# db = db.getSiblingDB('admin')
+	# db.changeUserPassword("root", passwordPrompt())
+	# use collector
+	# db.changeUserPassword("accountUser", passwordPrompt())
+	docker exec -it mongo_db mongo --username root --password root --eval \
+	  'db = db.getSiblingDB("admin"); db.changeUserPassword("root", passwordPrompt())'
+
+connect-db:
+	docker exec -it mongo_db mongo --username root --password
+
 run:
 	mkdir -p target
 	go build -o target/main main.go
