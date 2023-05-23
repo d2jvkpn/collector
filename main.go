@@ -71,8 +71,9 @@ func main() {
 	signal.Notify(quit, os.Interrupt, syscall.SIGTERM, syscall.SIGUSR2)
 
 	select {
-	case <-quit:
-		fmt.Println("...")
+	case sig := <-quit:
+		// if sig == syscall.SIGUSR2 {...}
+		fmt.Println("... received:", sig)
 		err = shutdown()
 	}
 
