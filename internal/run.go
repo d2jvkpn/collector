@@ -10,12 +10,23 @@ import (
 func Run(addr string) (shutdown func() error, err error) {
 	var shutdownHttp func() error
 
+	defer func() {
+		if err != nil {
+			_ = shutdownHandler()
+		}
+	}()
+
 	if shutdownHttp, err = ServeHttp(addr); err != nil {
 		return nil, err
 	}
+	defer func() {
+		if err != nil {
+			_ = shutdownHttp()
+		}
+	}()
 
 	if err = _KafkaHandler.Consume(); err != nil {
-		return nil, errors.Join(err, shutdownHandler(), shutdownHttp())
+		return nil, err
 	}
 
 	shutdown = func() error {
