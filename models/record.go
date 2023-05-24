@@ -2,6 +2,7 @@ package models
 
 import (
 	// "fmt"
+	"encoding/json"
 	"time"
 
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -24,7 +25,8 @@ type Data struct {
 	BizName        string    `bson:"bizName" json:"bizName"`
 	BizVersion     string    `bson:"bizVersion,omitempty" json:"bizVersion,omitempty"`
 	BindId         string    `bson:"bindId,omitempty" json:"bindId,omitempty"`
-	Data           any       `bson:"data" json:"data"`
+	// Data           any       `bson:"data" json:"data"`
+	Data json.RawMessage `bson:"data" json:"data"`
 }
 
 type DataMsg struct {
@@ -63,7 +65,9 @@ func (data *Data) WithBindId(bindId string) *Data {
 	return data
 }
 
-func (item *Data) WithData(data any) *Data {
-	item.Data = data
-	return item
+func (data *Data) WithData(item any) *Data {
+	// TODO: handle error
+	bts, _ := json.Marshal(item)
+	data.Data = bts
+	return data
 }

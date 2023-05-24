@@ -2,7 +2,7 @@ version: '3'
 
 services:
   mongo:
-    image: mongo:5
+    image: mongo:6
     container_name: collector-mongo_${APP_ENV}
     restart: always
     networks: ["net"]

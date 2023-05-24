@@ -1,0 +1,52 @@
+
+>>> BenchmarkUnmarshal_01
+goos: linux
+goarch: amd64
+pkg: github.com/d2jvkpn/collector/models
+cpu: AMD Ryzen 7 4800H with Radeon Graphics         
+BenchmarkUnmarshal_01-16    	   14779	     84660 ns/op	   22223 B/op	     388 allocs/op
+BenchmarkUnmarshal_01-16    	   14191	     79296 ns/op	   22220 B/op	     388 allocs/op
+BenchmarkUnmarshal_01-16    	   15464	     75719 ns/op	   22220 B/op	     388 allocs/op
+BenchmarkUnmarshal_01-16    	   17332	     79403 ns/op	   22226 B/op	     388 allocs/op
+BenchmarkUnmarshal_01-16    	   14487	     78986 ns/op	   22223 B/op	     388 allocs/op
+PASS
+ok  	github.com/d2jvkpn/collector/models	9.927s
+
+>>> BenchmarkMarshal_01
+goos: linux
+goarch: amd64
+pkg: github.com/d2jvkpn/collector/models
+cpu: AMD Ryzen 7 4800H with Radeon Graphics         
+BenchmarkMarshal_01-16    	   18967	     62285 ns/op	   16265 B/op	     259 allocs/op
+BenchmarkMarshal_01-16    	   18826	     63727 ns/op	   16265 B/op	     259 allocs/op
+BenchmarkMarshal_01-16    	   18452	     63690 ns/op	   16265 B/op	     259 allocs/op
+BenchmarkMarshal_01-16    	   19076	     67442 ns/op	   16265 B/op	     259 allocs/op
+BenchmarkMarshal_01-16    	   17398	     68169 ns/op	   16265 B/op	     259 allocs/op
+PASS
+ok  	github.com/d2jvkpn/collector/models	9.338s
+
+>>> BenchmarkUnmarshal_02
+goos: linux
+goarch: amd64
+pkg: github.com/d2jvkpn/collector/models
+cpu: AMD Ryzen 7 4800H with Radeon Graphics         
+BenchmarkUnmarshal_02-16    	   31567	     35570 ns/op	    5216 B/op	       9 allocs/op
+BenchmarkUnmarshal_02-16    	   31150	     37158 ns/op	    5216 B/op	       9 allocs/op
+BenchmarkUnmarshal_02-16    	   34664	     32315 ns/op	    5216 B/op	       9 allocs/op
+BenchmarkUnmarshal_02-16    	   32970	     34987 ns/op	    5216 B/op	       9 allocs/op
+BenchmarkUnmarshal_02-16    	   34528	     33558 ns/op	    5216 B/op	       9 allocs/op
+PASS
+ok  	github.com/d2jvkpn/collector/models	7.594s
+
+>>> BenchmarkMarshal_02
+goos: linux
+goarch: amd64
+pkg: github.com/d2jvkpn/collector/models
+cpu: AMD Ryzen 7 4800H with Radeon Graphics         
+BenchmarkMarshal_02-16    	   43936	     26053 ns/op	    3460 B/op	       1 allocs/op
+BenchmarkMarshal_02-16    	   45273	     26389 ns/op	    3459 B/op	       1 allocs/op
+BenchmarkMarshal_02-16    	   44064	     26267 ns/op	    3459 B/op	       1 allocs/op
+BenchmarkMarshal_02-16    	   44792	     25446 ns/op	    3459 B/op	       1 allocs/op
+BenchmarkMarshal_02-16    	   44226	     27092 ns/op	    3460 B/op	       1 allocs/op
+PASS
+ok  	github.com/d2jvkpn/collector/models	7.231s

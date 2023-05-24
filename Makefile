@@ -26,20 +26,13 @@ create-db:
 	docker run --name mongo_db -p 127.0.0.1:27017:27017 \
 	  -e MONGO_INITDB_ROOT_USERNAME=root \
 	  -e MONGO_INITDB_ROOT_PASSWORD=root \
-	  -d mongo:5
-	# >>> # >>> run conatiner by docker-compose
-	#$ docker-compose -f docker-compose.yaml up -d
-	# >>> enter mongo shell
-	#> db = db.getSiblingDB('admin')
-	#> db.changeUserPassword("root", passwordPrompt())
-	#> use collector
-	#> db.changeUserPassword("root", passwordPrompt())
-	# >>> change password
-	docker exec -it mongo_db mongo --username root --password root --eval \
+	  -d mongo:6
+	# >>> run conatiner by docker-compose
+	docker exec -it mongo_db mongosh --username root --password root --eval \
 	  'db = db.getSiblingDB("admin"); db.changeUserPassword("root", passwordPrompt())'
 
 connect-db:
-	docker exec -it mongo_db mongo --username root --password
+	docker exec -it mongo_db mongosh --username root --password
 
 run:
 	mkdir -p target
