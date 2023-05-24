@@ -13,7 +13,7 @@ type Record struct {
 	Id        primitive.ObjectID `bson:"_id,omitempty" json:"_id,omitempty"`
 	CreatedAt time.Time          `bson:"createdAt" json:"createdAt"`
 	Status    bool               `bson:"status" json:"status"`
-	Tags      []string           `bson:"tags,omitempty" json:"tags,omitempty"`
+	Tags      []string           `bson:"tags" json:"tags"`
 	Data      `bson:",inline"`
 }
 
@@ -70,4 +70,14 @@ func (data *Data) WithData(item any) *Data {
 	bts, _ := json.Marshal(item)
 	data.Data = bts
 	return data
+}
+
+func RecordFromData(data Data, createdAt time.Time) Record {
+	// ?? if createdAt.IsZero()
+	return Record{
+		CreatedAt: createdAt,
+		Status:    false,
+		Tags:      []string{},
+		Data:      data,
+	}
 }

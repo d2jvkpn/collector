@@ -96,10 +96,7 @@ func (handler *Handler) InsertMany(dataList []models.DataMsg) {
 	items = make([]any, 0, len(dataList))
 
 	for i := range dataList {
-		items = append(items, models.Record{
-			CreatedAt: createdAt,
-			Data:      dataList[i].Data,
-		})
+		items = append(items, models.RecordFromData(dataList[i].Data, createdAt))
 	}
 
 	at := createdAt.UTC()
