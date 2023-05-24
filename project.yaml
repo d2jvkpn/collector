@@ -22,7 +22,6 @@ config: |
     ## consumer:
     group_id: default
     ## producer:
-    # enable: true
     # key: key0001
   #
   bp:

@@ -13,10 +13,10 @@ type Config struct {
 	Version string   `mapstructure:"version"` // 3.4.0
 	Topic   string   `mapstructure:"topic"`
 
+	// consumer
 	GroupId string `mapstructure:"group_id"` // default
-
-	Enable bool   `mapstructure:"enable"`
-	Key    string `mapstructure:"key"`
+	// producer
+	Key string `mapstructure:"key"`
 }
 
 func HandlerFromConfig(ctx context.Context, vp *viper.Viper, field string) (

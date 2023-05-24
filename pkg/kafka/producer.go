@@ -32,10 +32,6 @@ func NewKafkaProducer(vp *viper.Viper, field string) (producer *KafkaProducer, e
 	}
 
 	producer = &KafkaProducer{config: config}
-	if !producer.config.Enable {
-		return producer, nil
-	}
-
 	if producer.config.Topic == "" || producer.config.Key == "" {
 		return nil, fmt.Errorf("invlaid topic or key")
 	}
@@ -48,15 +44,7 @@ func NewKafkaProducer(vp *viper.Viper, field string) (producer *KafkaProducer, e
 	return producer, nil
 }
 
-func (producer *KafkaProducer) Enabled() bool {
-	return producer.config.Enable
-}
-
 func (producer *KafkaProducer) SendMsg(bts []byte) (msg *sarama.ProducerMessage, ok bool) {
-	if !producer.config.Enable {
-		return nil, false
-	}
-
 	msg = &sarama.ProducerMessage{
 		Topic: producer.config.Topic,
 		Key:   sarama.StringEncoder(producer.config.Key),
@@ -68,9 +56,5 @@ func (producer *KafkaProducer) SendMsg(bts []byte) (msg *sarama.ProducerMessage,
 }
 
 func (producer *KafkaProducer) Close() (err error) {
-	if !producer.config.Enable {
-		return nil
-	}
-
 	return producer.producer.Close()
 }
