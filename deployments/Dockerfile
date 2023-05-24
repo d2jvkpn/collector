@@ -9,6 +9,7 @@ ENV TZ="Asia/Shanghai"
 RUN if [ "$BuildLocal" = "true" ]; then \
     echo "==> BuildLocal: true"; \
     sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories; \
+    go env -w GOPROXY="https://goproxy.cn,direct"; \
   fi
 
 RUN { apk --no-cache update && apk --no-cache upgrade; } &> /dev/null
@@ -23,7 +24,6 @@ COPY ./models ./models
 # COPY ./migrations ./migrations
 
 # in alpine, date doesn't parse %:z
-RUN go env -w GOPROXY="https://goproxy.cn,direct"
 RUN go build -o main -ldflags="-w -s ${GO_ldflags}" main.go
 
 ####
