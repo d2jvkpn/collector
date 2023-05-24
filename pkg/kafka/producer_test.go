@@ -6,10 +6,12 @@ import (
 	"testing"
 
 	"github.com/Shopify/sarama"
+	"github.com/d2jvkpn/gotk/impls"
+	"github.com/spf13/viper"
 )
 
-// go test -run TestProducer -- -addrs=localhost:29091
-func TestProducer(t *testing.T) {
+// go test -run TestProducer01 -- -addrs=localhost:29091
+func TestProducer01(t *testing.T) {
 	var (
 		err      error
 		producer sarama.AsyncProducer
@@ -45,4 +47,30 @@ func TestProducer(t *testing.T) {
 	if err = producer.Close(); err != nil {
 		t.Fatal(err)
 	}
+}
+
+// go test -run TestProducer02
+func TestProducer02(t *testing.T) {
+	var (
+		err      error
+		vp       *viper.Viper
+		producer *KafkaProducer
+	)
+
+	if vp, err = impls.LoadYamlConfig("../../configs/local.yaml", "TestConfig"); err != nil {
+		t.Fatal(err)
+	}
+
+	if producer, err = NewKafkaProducer(vp, "kafka"); err != nil {
+		t.Fatal(err)
+	}
+	fmt.Printf("==> %#v\n", producer)
+
+	msg, ok := producer.SendMsg([]byte("hello world"))
+	fmt.Printf("~~~ ok: %t, msg: %#v\n", ok, msg)
+
+	if err = producer.Close(); err != nil {
+		t.Fatal(err)
+	}
+	fmt.Printf("~~~ ok: %t, msg: %#v\n", ok, msg)
 }

@@ -8,10 +8,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/d2jvkpn/collector/pkg/wrap"
-
 	"github.com/Shopify/sarama"
 	"github.com/d2jvkpn/gotk"
+	"github.com/d2jvkpn/gotk/impls"
 	"github.com/spf13/viper"
 )
 
@@ -61,7 +60,7 @@ func TestMain(m *testing.M) {
 		return
 	}
 
-	if _TestConfig, err = wrap.LoadYamlConfig(configFile, "TestConfig"); err != nil {
+	if _TestConfig, err = impls.LoadYamlConfig(configFile, "TestConfig"); err != nil {
 		return
 	}
 

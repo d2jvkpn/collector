@@ -10,9 +10,9 @@ import (
 	"syscall"
 
 	"github.com/d2jvkpn/collector/internal"
-	"github.com/d2jvkpn/collector/pkg/wrap"
 
 	"github.com/d2jvkpn/gotk"
+	"github.com/d2jvkpn/gotk/impls"
 	"github.com/spf13/viper"
 )
 
@@ -36,7 +36,7 @@ func main() {
 		project  *viper.Viper
 	)
 
-	if project, err = wrap.LoadYamlBytes(_Project); err != nil {
+	if project, err = impls.LoadYamlBytes(_Project); err != nil {
 		log.Fatalln(err)
 	}
 

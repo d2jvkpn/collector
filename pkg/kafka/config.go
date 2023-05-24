@@ -10,9 +10,13 @@ import (
 
 type Config struct {
 	Addrs   []string `mapstructure:"addrs"`
-	Version string   `mapstructure:"version"`  // 3.4.0
-	GroupId string   `mapstructure:"group_id"` // default
+	Version string   `mapstructure:"version"` // 3.4.0
 	Topic   string   `mapstructure:"topic"`
+
+	GroupId string `mapstructure:"group_id"` // default
+
+	Enable bool   `mapstructure:"enable"`
+	Key    string `mapstructure:"key"`
 }
 
 func HandlerFromConfig(ctx context.Context, vp *viper.Viper, field string) (
@@ -31,8 +35,8 @@ func HandlerFromConfig(ctx context.Context, vp *viper.Viper, field string) (
 		return nil, fmt.Errorf("invlaid addrs or version")
 	}
 
-	if config.GroupId == "" || config.Topic == "" {
-		return nil, fmt.Errorf("invlaid group_id or topic")
+	if config.Topic == "" {
+		return nil, fmt.Errorf("invlaid topic")
 	}
 
 	cfg = sarama.NewConfig()
