@@ -10,20 +10,21 @@ import (
 )
 
 func Run(addr string) (shutdown func() error, err error) {
-	var shutdownHttp func() error
+	var shutdownProm func() error
 
 	defer func() {
 		if err != nil {
-			_ = shutdownHandler()
+			_ = onExit()
 		}
 	}()
 
-	if shutdownHttp, err = wrap.PromHttp(addr); err != nil {
+	if shutdownProm, err = wrap.PromHttp(addr); err != nil {
 		return nil, err
 	}
+
 	defer func() {
 		if err != nil {
-			_ = shutdownHttp()
+			_ = shutdownProm()
 		}
 	}()
 
@@ -32,13 +33,13 @@ func Run(addr string) (shutdown func() error, err error) {
 	}
 
 	shutdown = func() error {
-		return errors.Join(shutdownHandler(), shutdownHttp())
+		return errors.Join(onExit(), shutdownProm())
 	}
 
 	return shutdown, nil
 }
 
-func shutdownHandler() (err error) {
+func onExit() (err error) {
 	var e1, e2, e3 error
 
 	if _KafkaHandler != nil {

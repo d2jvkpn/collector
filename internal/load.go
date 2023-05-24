@@ -8,25 +8,24 @@ import (
 	"github.com/d2jvkpn/collector/pkg/kafka"
 	"github.com/d2jvkpn/collector/pkg/wrap"
 
+	"github.com/d2jvkpn/gotk/impls"
 	"github.com/spf13/viper"
 	"go.uber.org/zap"
 )
 
-func Load(confg string) (err error) {
+func Load(config string) (err error) {
 	var vp *viper.Viper
 
 	defer func() {
 		if err != nil {
-			_ = shutdownHandler()
+			_ = onExit()
 		}
 	}()
 
-	vp = viper.New()
-	vp.SetConfigType("yaml")
-	vp.SetConfigFile(confg)
-	if err = vp.ReadInConfig(); err != nil {
-		return fmt.Errorf("ReadInConfig: %w", err)
+	if vp, err = impls.LoadYamlConfig(config, "Configuration"); err != nil {
+		return err
 	}
+
 	vp.SetDefault("http.cors", "*")
 	vp.SetDefault("log.size_mb", 256)
 
