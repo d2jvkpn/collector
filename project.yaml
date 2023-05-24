@@ -4,6 +4,7 @@ version: 0.1.0
 
 # configs/{{.APP_ENV}}.yaml
 config: |
+  app_name: collector_local
   log:
     path: logs/collector.log
     size_mb: 256
