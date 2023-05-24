@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/Shopify/sarama"
+	"github.com/spf13/viper"
 	"go.uber.org/zap"
 )
 
@@ -38,6 +39,28 @@ func NewHandler(ctx context.Context, group sarama.ConsumerGroup, topics []string
 	return handler
 }
 
+func HandlerFromConfig(ctx context.Context, vp *viper.Viper, field string) (
+	handler *Handler, err error) {
+	var (
+		config *Config
+		scfg   *sarama.Config
+		group  sarama.ConsumerGroup
+	)
+
+	if config, scfg, err = NewConfigFromViper(vp, field); err != nil {
+		return nil, err
+	}
+
+	if group, err = sarama.NewConsumerGroup(config.Addrs, config.GroupId, scfg); err != nil {
+		return nil, err
+	}
+
+	handler = NewHandler(ctx, group, []string{config.Topic})
+
+	// alter handler.Logger later
+	return handler, nil
+}
+
 func (handler *Handler) WithHandle(handle Handle) *Handler {
 	handler.handle = handle
 	return handler
@@ -48,7 +71,7 @@ func (handler *Handler) WithLogger(logger *zap.Logger) *Handler {
 	return handler
 }
 
-func (handler *Handler) Consume() (err error) {
+func (handler *Handler) Ok() (err error) {
 	if handler.handle == nil {
 		return fmt.Errorf("hanlder is unset")
 	}
@@ -57,8 +80,11 @@ func (handler *Handler) Consume() (err error) {
 		return fmt.Errorf("logger is unset")
 	}
 
-	go handler.consume()
 	return nil
+}
+
+func (handler *Handler) Consume() {
+	go handler.consume()
 }
 
 // maxRetries: 5, wait: 3 * time.Second

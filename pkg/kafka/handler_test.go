@@ -38,10 +38,12 @@ func TestHandler(t *testing.T) {
 	ctx = context.Background()
 	handler = NewHandler(ctx, group, []string{_TestTopic})
 	logger, _ := zap.NewProduction()
-	handler.WithHandle(_TestMsgHandle).WithLogger(logger)
-	if err = handler.Consume(); err != nil {
+	err = handler.WithHandle(_TestMsgHandle).WithLogger(logger).Ok()
+	if err != nil {
 		t.Fatal(err)
 	}
+
+	handler.Consume()
 
 	time.Sleep(15 * time.Second)
 	log.Println("<<< Exit")

@@ -1,7 +1,6 @@
 package kafka
 
 import (
-	"context"
 	"fmt"
 
 	"github.com/Shopify/sarama"
@@ -19,37 +18,27 @@ type Config struct {
 	Key string `mapstructure:"key"`
 }
 
-func HandlerFromConfig(ctx context.Context, vp *viper.Viper, field string) (
-	handler *Handler, err error) {
-	var (
-		config Config
-		cfg    *sarama.Config
-		group  sarama.ConsumerGroup
-	)
+func NewConfigFromViper(vp *viper.Viper, field string) (
+	config *Config, scfg *sarama.Config, err error) {
 
-	if err = vp.UnmarshalKey(field, &config); err != nil {
-		return nil, err
+	config = new(Config)
+
+	if err = vp.UnmarshalKey(field, config); err != nil {
+		return nil, nil, err
 	}
 
 	if len(config.Addrs) == 0 || config.Version == "" {
-		return nil, fmt.Errorf("invlaid addrs or version")
+		return nil, nil, fmt.Errorf("invlaid addrs or version")
 	}
 
 	if config.Topic == "" {
-		return nil, fmt.Errorf("invlaid topic")
+		return nil, nil, fmt.Errorf("invlaid topic")
 	}
 
-	cfg = sarama.NewConfig()
-	if cfg.Version, err = sarama.ParseKafkaVersion(config.Version); err != nil {
-		return nil, err
+	scfg = sarama.NewConfig()
+	if scfg.Version, err = sarama.ParseKafkaVersion(config.Version); err != nil {
+		return nil, nil, err
 	}
 
-	if group, err = sarama.NewConsumerGroup(config.Addrs, config.GroupId, cfg); err != nil {
-		return nil, err
-	}
-
-	handler = NewHandler(ctx, group, []string{config.Topic})
-
-	// alter handler.Logger later
-	return handler, nil
+	return config, scfg, nil
 }

@@ -14,29 +14,21 @@ type KafkaProducer struct {
 
 func NewKafkaProducer(vp *viper.Viper, field string) (producer *KafkaProducer, err error) {
 	var (
-		config Config
-		cfg    *sarama.Config
+		config *Config
+		scfg   *sarama.Config
 	)
 
-	if err = vp.UnmarshalKey(field, &config); err != nil {
+	if config, scfg, err = NewConfigFromViper(vp, field); err != nil {
 		return nil, err
 	}
 
-	if len(config.Addrs) == 0 || config.Version == "" {
-		return nil, fmt.Errorf("invlaid addrs or version")
-	}
-
-	cfg = sarama.NewConfig()
-	if cfg.Version, err = sarama.ParseKafkaVersion(config.Version); err != nil {
-		return nil, err
-	}
-
-	producer = &KafkaProducer{config: config}
-	if producer.config.Topic == "" || producer.config.Key == "" {
+	if config.Key == "" {
 		return nil, fmt.Errorf("invlaid topic or key")
 	}
 
-	producer.producer, err = sarama.NewAsyncProducer(producer.config.Addrs, cfg)
+	producer = &KafkaProducer{config: *config}
+
+	producer.producer, err = sarama.NewAsyncProducer(producer.config.Addrs, scfg)
 	if err != nil {
 		return nil, err
 	}

@@ -68,7 +68,11 @@ func Load(config string) (err error) {
 	if _KafkaHandler, err = kafka.HandlerFromConfig(context.TODO(), vp, "kafka"); err != nil {
 		return fmt.Errorf("HandlerFromConfig: %w", err)
 	}
-	_KafkaHandler.WithLogger(_Logger.Named("kafka")).WithHandle(_Handler.Handle)
+
+	err = _KafkaHandler.WithLogger(_Logger.Named("kafka")).WithHandle(_Handler.Handle).Ok()
+	if err != nil {
+		return fmt.Errorf("Handler: %w", err)
+	}
 
 	return nil
 }

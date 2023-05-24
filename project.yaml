@@ -5,6 +5,7 @@ version: 0.1.0
 # configs/{{.APP_ENV}}.yaml
 config: |
   service_name: collector_local
+  #
   log:
     path: logs/collector.log
     size_mb: 256
@@ -20,10 +21,10 @@ config: |
     addrs: [localhost:29091]
     version: 3.4.0
     topic: collector
-    ## consumer:
+    # consumer:
     group_id: default
-    ## producer:
-    # key: key0001
+    # producer:
+    key: key0001
   #
   bp:
     count: 1000

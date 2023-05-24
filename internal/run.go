@@ -28,9 +28,7 @@ func Run(addr string) (shutdown func() error, err error) {
 		}
 	}()
 
-	if err = _KafkaHandler.Consume(); err != nil {
-		return nil, err
-	}
+	_KafkaHandler.Consume()
 
 	shutdown = func() error {
 		return errors.Join(onExit(), shutdownProm())
