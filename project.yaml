@@ -18,8 +18,12 @@ config: |
   kafka:
     addrs: [localhost:29091]
     version: 3.4.0
-    group_id: default
     topic: collector
+    ## consumer:
+    group_id: default
+    ## producer:
+    # enable: true
+    # key: key0001
   #
   bp:
     count: 1000
