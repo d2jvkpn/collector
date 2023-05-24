@@ -88,6 +88,10 @@ func (handler *Handler) InsertMany(dataList []models.DataMsg) {
 		result    *mongo.InsertManyResult
 	)
 
+	if len(dataList) == 0 {
+		return
+	}
+
 	createdAt = time.Now()
 	items = make([]any, 0, len(dataList))
 
