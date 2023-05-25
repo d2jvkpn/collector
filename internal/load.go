@@ -25,9 +25,12 @@ func Load(config string) (err error) {
 	if vp, err = impls.LoadYamlConfig(config, "Configuration"); err != nil {
 		return err
 	}
-
 	vp.SetDefault("http.cors", "*")
 	vp.SetDefault("log.size_mb", 256)
+
+	if err = SetConfig(vp); err != nil {
+		return fmt.Errorf("SetConfig: %w", err)
+	}
 
 	_Logger, err = wrap.NewLogger(
 		vp.GetString("log.path"),
