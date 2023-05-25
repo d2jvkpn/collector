@@ -5,14 +5,12 @@ go 1.20
 require (
 	github.com/Shopify/sarama v1.38.1
 	github.com/d2jvkpn/gotk v0.0.0-20230523025123-82bbcb769689
-	github.com/d2jvkpn/gotk/impls v0.0.0-20230524071856-2c20c5aa4cee
+	github.com/d2jvkpn/gotk/impls v0.0.0-20230525070143-e2b92f0c6954
 	github.com/prometheus/client_golang v1.15.1
 	github.com/spf13/viper v1.15.0
 	github.com/valyala/fasthttp v1.47.0
 	go.mongodb.org/mongo-driver v1.11.6
-	go.uber.org/multierr v1.11.0
 	go.uber.org/zap v1.24.0
-	gopkg.in/natefinch/lumberjack.v2 v2.2.1
 )
 
 require (
@@ -78,6 +76,7 @@ require (
 	github.com/xdg-go/stringprep v1.0.4 // indirect
 	github.com/youmark/pkcs8 v0.0.0-20201027041543-1326539a0a0a // indirect
 	go.uber.org/atomic v1.11.0 // indirect
+	go.uber.org/multierr v1.11.0 // indirect
 	golang.org/x/arch v0.3.0 // indirect
 	golang.org/x/crypto v0.9.0 // indirect
 	golang.org/x/exp v0.0.0-20230522175609-2e198f4a06a1 // indirect
@@ -87,5 +86,6 @@ require (
 	golang.org/x/text v0.9.0 // indirect
 	google.golang.org/protobuf v1.30.0 // indirect
 	gopkg.in/ini.v1 v1.67.0 // indirect
+	gopkg.in/natefinch/lumberjack.v2 v2.2.1 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )

@@ -32,7 +32,7 @@ func Load(config string) (err error) {
 		return fmt.Errorf("SetConfig: %w", err)
 	}
 
-	_Logger, err = wrap.NewLogger(
+	_Logger, err = impls.NewLogger(
 		vp.GetString("log.path"),
 		zap.InfoLevel,
 		vp.GetInt("log.size_mb"),

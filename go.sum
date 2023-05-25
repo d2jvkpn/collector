@@ -64,8 +64,8 @@ github.com/cncf/udpa/go v0.0.0-20200629203442-efcf912fb354/go.mod h1:WmhPx2Nbnht
 github.com/cncf/udpa/go v0.0.0-20201120205902-5459f2c99403/go.mod h1:WmhPx2Nbnhtbo57+VJT5O0JRkEi1Wbu0z5j0R8u5Hbk=
 github.com/d2jvkpn/gotk v0.0.0-20230523025123-82bbcb769689 h1:aYGoMD5WtUGhwM6bVIbbsT+ENSM2Q9qmM2AU+KdRGKQ=
 github.com/d2jvkpn/gotk v0.0.0-20230523025123-82bbcb769689/go.mod h1:XQMSKPMCWAeVMP9SHsu6L8ap6dztzFWth5ULmvQCgRo=
-github.com/d2jvkpn/gotk/impls v0.0.0-20230524071856-2c20c5aa4cee h1:gQptKIOIWXiV0+EqBHSIR+rWYksrtCoFzdVZE8n+Rys=
-github.com/d2jvkpn/gotk/impls v0.0.0-20230524071856-2c20c5aa4cee/go.mod h1:wX/JzayAF6nMP+g+QV1NUGfXuaLg4dyCgVatsZYXeUU=
+github.com/d2jvkpn/gotk/impls v0.0.0-20230525070143-e2b92f0c6954 h1:JAmhhVuXtFzG8wL7xy2Qao60G8cspE7NdvZMSB/LK48=
+github.com/d2jvkpn/gotk/impls v0.0.0-20230525070143-e2b92f0c6954/go.mod h1:FljFAEVh6ufUhZZTPHqxqojgH0wtqzFWW5//2N1geek=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
