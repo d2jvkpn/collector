@@ -18,13 +18,14 @@ type Record struct {
 }
 
 type Data struct {
-	ServiceName    string    `bson:"serviceName" json:"serviceName"`
-	ServiceVersion string    `bson:"serviceVersion,omitempty" json:"serviceVersion,omitempty"`
-	EventId        string    `bson:"eventId" json:"eventId"`
-	EventAt        time.Time `bson:"eventAt" json:"eventAt"`
-	BizName        string    `bson:"bizName" json:"bizName"`
-	BizVersion     string    `bson:"bizVersion,omitempty" json:"bizVersion,omitempty"`
-	BindId         string    `bson:"bindId,omitempty" json:"bindId,omitempty"`
+	ServiceName    string            `bson:"serviceName" json:"serviceName"`
+	ServiceVersion string            `bson:"serviceVersion,omitempty" json:"serviceVersion,omitempty"`
+	EventId        string            `bson:"eventId" json:"eventId"`
+	EventAt        time.Time         `bson:"eventAt" json:"eventAt"`
+	BizName        string            `bson:"bizName" json:"bizName"`
+	BizVersion     string            `bson:"bizVersion,omitempty" json:"bizVersion,omitempty"`
+	BindId         string            `bson:"bindId,omitempty" json:"bindId,omitempty"` // deprecated, use BindIds instead
+	BindIds        map[string]string `bson:"bindIds,omitempty" json:"bindIds,omitempty"`
 	// Data           any       `bson:"data" json:"data"`
 	Data json.RawMessage `bson:"data" json:"data"`
 }
@@ -60,8 +61,14 @@ func (data *Data) WithBizV(version string) *Data {
 	return data
 }
 
+// deprecated, use BindIds instead
 func (data *Data) WithBindId(bindId string) *Data {
 	data.BindId = bindId
+	return data
+}
+
+func (data *Data) WithBindIds(bindIds map[string]string) *Data {
+	data.BindIds = bindIds
 	return data
 }
 

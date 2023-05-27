@@ -35,10 +35,7 @@ connect-db:
 	docker exec -it mongo_db mongosh --username root --password
 
 run:
-	mkdir -p target
-	go build -o target/main -ldflags="-w -s -X main.build_time=$(build_time) \
-	  -X main.git_branch=$(git_branch) -X main.git_commit_id=unknown" main.go
-	./target/main
+	go main.go --config=configs/local.yaml --addr=0.0.0.0:5011
 
 build:
 	echo ">>> git branch: $(git_branch)"
