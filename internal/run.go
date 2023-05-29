@@ -1,18 +1,22 @@
 package internal
 
 import (
-	// "fmt"
 	"context"
 	"errors"
+	"fmt"
 	"time"
 
 	"github.com/d2jvkpn/collector/internal/settings"
-
 	"github.com/d2jvkpn/collector/pkg/wrap"
+
+	"github.com/spf13/viper"
 )
 
 func Run(addr string) (shutdown func() error, err error) {
-	var shutdownProm func() error
+	var (
+		vp              *viper.Viper
+		shutdownMetrics func() error
+	)
 
 	defer func() {
 		if err != nil {
@@ -20,20 +24,26 @@ func Run(addr string) (shutdown func() error, err error) {
 		}
 	}()
 
-	if shutdownProm, err = wrap.PromFasthttp(addr); err != nil {
+	// shutdownMetrics, err = wrap.PromFasthttp(addr)
+	if vp = settings.ConfigSub("metrics"); vp == nil {
+		return nil, fmt.Errorf("config.metrics is unset")
+	}
+
+	vp.Set("addr", addr)
+	if shutdownMetrics, err = wrap.HttpMetrics(vp, settings.Meta); err != nil {
 		return nil, err
 	}
 
 	defer func() {
 		if err != nil {
-			_ = shutdownProm()
+			_ = shutdownMetrics()
 		}
 	}()
 
 	_KafkaHandler.Consume()
 
 	shutdown = func() error {
-		return errors.Join(onExit(), shutdownProm())
+		return errors.Join(onExit(), shutdownMetrics())
 	}
 
 	return shutdown, nil

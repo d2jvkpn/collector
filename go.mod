@@ -6,15 +6,14 @@ require (
 	github.com/Shopify/sarama v1.38.1
 	github.com/d2jvkpn/gotk v0.0.0-20230523025123-82bbcb769689
 	github.com/d2jvkpn/gotk/impls v0.0.0-20230525070143-e2b92f0c6954
+	github.com/gin-gonic/gin v1.9.0
 	github.com/prometheus/client_golang v1.15.1
 	github.com/spf13/viper v1.15.0
-	github.com/valyala/fasthttp v1.47.0
 	go.mongodb.org/mongo-driver v1.11.6
 	go.uber.org/zap v1.24.0
 )
 
 require (
-	github.com/andybalholm/brotli v1.0.5 // indirect
 	github.com/beorn7/perks v1.0.1 // indirect
 	github.com/bytedance/sonic v1.8.10 // indirect
 	github.com/cespare/xxhash/v2 v2.2.0 // indirect
@@ -26,7 +25,6 @@ require (
 	github.com/fsnotify/fsnotify v1.6.0 // indirect
 	github.com/gabriel-vasile/mimetype v1.4.2 // indirect
 	github.com/gin-contrib/sse v0.1.0 // indirect
-	github.com/gin-gonic/gin v1.9.0 // indirect
 	github.com/go-playground/locales v0.14.1 // indirect
 	github.com/go-playground/universal-translator v0.18.1 // indirect
 	github.com/go-playground/validator/v10 v10.14.0 // indirect
@@ -70,7 +68,6 @@ require (
 	github.com/tidwall/pretty v1.2.1 // indirect
 	github.com/twitchyliquid64/golang-asm v0.15.1 // indirect
 	github.com/ugorji/go/codec v1.2.11 // indirect
-	github.com/valyala/bytebufferpool v1.0.0 // indirect
 	github.com/xdg-go/pbkdf2 v1.0.0 // indirect
 	github.com/xdg-go/scram v1.1.2 // indirect
 	github.com/xdg-go/stringprep v1.0.4 // indirect

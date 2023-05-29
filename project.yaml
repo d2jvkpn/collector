@@ -29,6 +29,10 @@ config: |
   bp:
     count: 1000
     interval: 1m
+  #
+  metrics:
+    prometheus: true
+    debug: true
 
 consul: |
     service_name: collector_local

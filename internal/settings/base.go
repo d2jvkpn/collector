@@ -43,6 +43,10 @@ func SetConfig(vp *viper.Viper) (err error) {
 	return nil
 }
 
+func ConfigSub(key string) *viper.Viper {
+	return _Config.Sub(key)
+}
+
 func Project() string {
 	return _Project.GetString("project")
 }
