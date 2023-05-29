@@ -17,13 +17,3 @@ var (
 	_KafkaHandler *kafka.Handler
 	_Handler      *Handler
 )
-
-func SetConfig(vp *viper.Viper) (err error) {
-	_Config = vp
-
-	// if _ServiceName = _Config.GetString("service_name"); _ServiceName == "" {
-	// 	return fmt.Errorf("service_name is empty in config")
-	// }
-
-	return nil
-}

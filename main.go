@@ -58,7 +58,7 @@ func main() {
 
 	flag.Parse()
 
-	if err = internal.Load(config); err != nil {
+	if err = internal.LoadLocal(config); err != nil {
 		log.Fatalln(err)
 	}
 

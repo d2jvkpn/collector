@@ -35,7 +35,7 @@ connect-db:
 	docker exec -it mongo_db mongosh --username root --password
 
 run:
-	go main.go --config=configs/local.yaml --addr=0.0.0.0:5011
+	go run main.go --config=configs/local.yaml --addr=0.0.0.0:5011
 
 build:
 	echo ">>> git branch: $(git_branch)"

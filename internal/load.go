@@ -13,24 +13,31 @@ import (
 	"go.uber.org/zap"
 )
 
-func Load(config string) (err error) {
+func LoadLocal(config string) (err error) {
 	var vp *viper.Viper
 
+	if vp, err = impls.LoadYamlConfig(config, "Configuration"); err != nil {
+		return err
+	}
+
+	return load(vp)
+}
+
+func load(vp *viper.Viper) (err error) {
 	defer func() {
 		if err != nil {
 			_ = onExit()
 		}
 	}()
 
-	if vp, err = impls.LoadYamlConfig(config, "Configuration"); err != nil {
-		return err
-	}
 	vp.SetDefault("http.cors", "*")
 	vp.SetDefault("log.size_mb", 256)
 
-	if err = SetConfig(vp); err != nil {
-		return fmt.Errorf("SetConfig: %w", err)
-	}
+	_Config = vp
+
+	// if _ServiceName = _Config.GetString("service_name"); _ServiceName == "" {
+	// 	return fmt.Errorf("service_name is empty in config")
+	// }
 
 	_Logger, err = impls.NewLogger(
 		vp.GetString("log.path"),
