@@ -37,6 +37,9 @@ connect-db:
 run:
 	go run main.go --config=configs/local.yaml --addr=0.0.0.0:5011
 
+get-password:
+	yq .mongodb.uri configs/local.yaml | grep -o ":[^:]*@" | sed 's/^.//; s/.$//'
+
 build:
 	echo ">>> git branch: $(git_branch)"
 	mkdir -p target
