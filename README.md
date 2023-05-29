@@ -5,7 +5,7 @@ A data collection program developed using Kafka, MongoDB, and Golang.
 - mongodb: https://github.com/d2jvkpn/deploy/tree/dev/productions/mongodb
 - kafka: https://github.com/d2jvkpn/deploy/tree/dev/productions/kafka-kraft
 
-#### 2. docker images
+#### 2. Docker images
 - registry.cn-shanghai.aliyuncs.com/d2jvkpn/collector:dev
 
 #### 3. Configuration

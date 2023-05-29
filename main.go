@@ -27,6 +27,7 @@ func init() {
 
 func main() {
 	var (
+		consul   bool
 		config   string
 		addr     string
 		err      error
@@ -46,6 +47,7 @@ func main() {
 
 	flag.StringVar(&config, "config", "configs/local.yaml", "configuration file path")
 	flag.StringVar(&addr, "addr", "0.0.0.0:5011", "prometheus metrics http server")
+	flag.BoolVar(&consul, "consul", false, "using consul")
 
 	flag.Usage = func() {
 		output := flag.CommandLine.Output()
@@ -58,7 +60,15 @@ func main() {
 
 	flag.Parse()
 
-	if err = internal.LoadLocal(config); err != nil {
+	meta["config"] = config
+	meta["consul"] = consul
+
+	if consul {
+		err = internal.LoadConsul(config)
+	} else {
+		err = internal.LoadLocal(config)
+	}
+	if err != nil {
 		log.Fatalln(err)
 	}
 

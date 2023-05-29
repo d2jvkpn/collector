@@ -18,7 +18,7 @@ func Run(addr string) (shutdown func() error, err error) {
 		}
 	}()
 
-	if shutdownProm, err = wrap.PromHttp(addr); err != nil {
+	if shutdownProm, err = wrap.PromFasthttp(addr); err != nil {
 		return nil, err
 	}
 

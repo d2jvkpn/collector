@@ -23,6 +23,10 @@ func LoadLocal(config string) (err error) {
 	return load(vp)
 }
 
+func LoadConsul(config string) (err error) {
+	return fmt.Errorf("unimplemented")
+}
+
 func load(vp *viper.Viper) (err error) {
 	defer func() {
 		if err != nil {

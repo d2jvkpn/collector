@@ -29,3 +29,8 @@ config: |
   bp:
     count: 1000
     interval: 1m
+
+consul: |
+    service_name: collector_local
+    #
+    unimplemented

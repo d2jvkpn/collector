@@ -9,7 +9,9 @@ import (
 	"github.com/valyala/fasthttp/fasthttpadaptor"
 )
 
-func PromHttp(addr string) (shutdown func() error, err error) {
+type PromFasthttpOpt func(*fasthttp.Server)
+
+func PromFasthttp(addr string, opts ...PromFasthttpOpt) (shutdown func() error, err error) {
 	var (
 		listener net.Listener
 		server   *fasthttp.Server
@@ -22,6 +24,10 @@ func PromHttp(addr string) (shutdown func() error, err error) {
 	server = new(fasthttp.Server)
 	prom := fasthttpadaptor.NewFastHTTPHandler(promhttp.Handler())
 	server.Handler = fasthttp.CompressHandler(prom)
+
+	for i := range opts {
+		opts[i](server)
+	}
 
 	shutdown = func() error {
 		return server.Shutdown()
