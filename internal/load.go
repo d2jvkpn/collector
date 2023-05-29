@@ -58,23 +58,13 @@ func load(vp *viper.Viper) (err error) {
 	_Logger = settings.Logger.Named("internal")
 
 	//
-	if _MongoClient, err = wrap.MongoClient(vp, "mongodb"); err != nil {
-		return fmt.Errorf("MongoClient: %w", err)
-	}
-
-	//
-	count := vp.GetInt("bp.count")
-	if count <= 0 {
-		return fmt.Errorf("invalid bp.count")
-	}
-	interval := vp.GetDuration("bp.interval")
-	if interval <= 0 {
-		return fmt.Errorf("invalid bp.interval")
-	}
-	if _Handler, err = biz.NewHandler(count, interval); err != nil {
+	if _Handler, err = biz.NewHandler(vp.Sub("bp")); err != nil {
 		return fmt.Errorf("NewHandler: %w", err)
 	}
 
+	if _MongoClient, err = wrap.MongoClient(vp, "mongodb"); err != nil {
+		return fmt.Errorf("MongoClient: %w", err)
+	}
 	db := vp.GetString("mongodb.db")
 	if db == "" {
 		return fmt.Errorf("mongodb.db is empty")

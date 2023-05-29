@@ -10,6 +10,7 @@ import (
 
 	"github.com/Shopify/sarama"
 	"github.com/d2jvkpn/gotk/impls"
+	"github.com/spf13/viper"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.uber.org/zap"
 )
@@ -20,10 +21,25 @@ type Handler struct {
 	db     *mongo.Database
 }
 
-func NewHandler(count int, duration time.Duration) (handler *Handler, err error) {
+func NewHandler(vp *viper.Viper) (handler *Handler, err error) {
+	var (
+		count    int
+		interval time.Duration
+	)
+
+	count = vp.GetInt("count")
+	if count <= 0 {
+		return nil, fmt.Errorf("NewHandler: invalid count")
+	}
+
+	interval = vp.GetDuration("interval")
+	if interval <= 0 {
+		return nil, fmt.Errorf("NewHandler: invalid interval")
+	}
+
 	handler = &Handler{}
 
-	handler.bp, err = impls.NewBatchProcess[models.DataMsg](count, duration, handler.InsertMany)
+	handler.bp, err = impls.NewBatchProcess[models.DataMsg](count, interval, handler.InsertMany)
 	if err != nil {
 		return nil, err
 	}
