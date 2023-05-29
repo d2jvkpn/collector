@@ -7,8 +7,8 @@ import (
 	"time"
 
 	"github.com/d2jvkpn/collector/internal/settings"
-	"github.com/d2jvkpn/collector/pkg/wrap"
 
+	"github.com/d2jvkpn/gotk/impls"
 	"github.com/spf13/viper"
 )
 
@@ -30,7 +30,7 @@ func Run(addr string) (shutdown func() error, err error) {
 	}
 
 	vp.Set("addr", addr)
-	if shutdownMetrics, err = wrap.HttpMetrics(vp, settings.Meta); err != nil {
+	if shutdownMetrics, err = impls.HttpMetrics(vp, settings.Meta); err != nil {
 		return nil, err
 	}
 
