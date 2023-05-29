@@ -3,17 +3,16 @@ package internal
 import (
 	// "fmt"
 
+	"github.com/d2jvkpn/collector/internal/biz"
 	"github.com/d2jvkpn/collector/pkg/kafka"
 
-	"github.com/d2jvkpn/gotk/impls"
-	"github.com/spf13/viper"
 	"go.mongodb.org/mongo-driver/mongo"
+	"go.uber.org/zap"
 )
 
 var (
-	_Config       *viper.Viper
-	_Logger       *impls.Logger
 	_MongoClient  *mongo.Client
+	_Handler      *biz.Handler
 	_KafkaHandler *kafka.Handler
-	_Handler      *Handler
+	_Logger       *zap.Logger
 )

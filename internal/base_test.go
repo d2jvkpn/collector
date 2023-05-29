@@ -37,7 +37,7 @@ func TestFormat(t *testing.T) {
 func TestMain(m *testing.M) {
 	_TestTopic = "collector"
 	_TestKey = "key0001"
-	_TestAddrs = []string{"localhost:29091"}
+	_TestAddrs = []string{"localhost:9092"}
 	_TestCtx = context.Background()
 
 	var (

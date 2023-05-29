@@ -10,10 +10,9 @@ import (
 	"syscall"
 
 	"github.com/d2jvkpn/collector/internal"
+	"github.com/d2jvkpn/collector/internal/settings"
 
 	"github.com/d2jvkpn/gotk"
-	"github.com/d2jvkpn/gotk/impls"
-	"github.com/spf13/viper"
 )
 
 var (
@@ -31,19 +30,13 @@ func main() {
 		config   string
 		addr     string
 		err      error
-		meta     map[string]any
 		quit     chan os.Signal
 		shutdown func() error
-		project  *viper.Viper
 	)
 
-	if project, err = impls.LoadYamlBytes(_Project); err != nil {
+	if err = settings.SetProject(_Project); err != nil {
 		log.Fatalln(err)
 	}
-
-	meta = gotk.BuildInfo()
-	meta["project"] = project.GetString("project")
-	meta["version"] = project.GetString("version")
 
 	flag.StringVar(&config, "config", "configs/local.yaml", "configuration file path")
 	flag.StringVar(&addr, "addr", "0.0.0.0:5011", "prometheus metrics http server")
@@ -54,14 +47,14 @@ func main() {
 
 		fmt.Fprintf(output, "Usage:\n")
 		flag.PrintDefaults()
-		fmt.Fprintf(output, "\nConfiguration:\n```yaml\n%s```\n", project.GetString("config"))
-		fmt.Fprintf(output, "\nBuild:\n```text\n%s\n```\n", gotk.BuildInfoText(meta))
+		fmt.Fprintf(output, "\nConfiguration:\n```yaml\n%s```\n", settings.DemoConfig())
+		fmt.Fprintf(output, "\nBuild:\n```text\n%s\n```\n", gotk.BuildInfoText(settings.Meta))
 	}
 
 	flag.Parse()
 
-	meta["config"] = config
-	meta["consul"] = consul
+	settings.Meta["config"] = config
+	settings.Meta["consul"] = consul
 
 	if consul {
 		err = internal.LoadConsul(config)

@@ -6,6 +6,8 @@ import (
 	"errors"
 	"time"
 
+	"github.com/d2jvkpn/collector/internal/settings"
+
 	"github.com/d2jvkpn/collector/pkg/wrap"
 )
 
@@ -54,8 +56,8 @@ func onExit() (err error) {
 		e2 = _MongoClient.Disconnect(ctx)
 	}
 
-	if _Logger != nil {
-		e3 = _Logger.Down()
+	if settings.Logger != nil {
+		e3 = settings.Logger.Down()
 	}
 
 	return errors.Join(e1, e2, e3)
