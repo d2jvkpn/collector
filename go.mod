@@ -5,7 +5,7 @@ go 1.20
 require (
 	github.com/Shopify/sarama v1.38.1
 	github.com/d2jvkpn/gotk v0.0.0-20230529112929-95d207461c98
-	github.com/d2jvkpn/gotk/impls v0.0.0-20230529112929-95d207461c98
+	github.com/d2jvkpn/gotk/impls v0.0.0-20230530023800-4cb2e81b33af
 	github.com/spf13/viper v1.15.0
 	go.mongodb.org/mongo-driver v1.11.6
 	go.uber.org/zap v1.24.0

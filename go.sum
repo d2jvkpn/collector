@@ -73,8 +73,8 @@ github.com/cncf/xds/go v0.0.0-20210922020428-25de7278fc84/go.mod h1:eXthEFrGJvWH
 github.com/cncf/xds/go v0.0.0-20211011173535-cb28da3451f1/go.mod h1:eXthEFrGJvWHgFFCl3hGmgk+/aYT6PnTQLykKQRLhEs=
 github.com/d2jvkpn/gotk v0.0.0-20230529112929-95d207461c98 h1:EJ2aIgovc80fHOHG7ctomAMkGi/Sxj62XU46ZSwTYQc=
 github.com/d2jvkpn/gotk v0.0.0-20230529112929-95d207461c98/go.mod h1:XQMSKPMCWAeVMP9SHsu6L8ap6dztzFWth5ULmvQCgRo=
-github.com/d2jvkpn/gotk/impls v0.0.0-20230529112929-95d207461c98 h1:8pRuoSEDh0z32BRV8wdWIBeQvzNY6elhhwvR+uG4/z8=
-github.com/d2jvkpn/gotk/impls v0.0.0-20230529112929-95d207461c98/go.mod h1:dykEnGjfJSOIBd+EPjBBorGPgHPGSBCch74ELEwYnlQ=
+github.com/d2jvkpn/gotk/impls v0.0.0-20230530023800-4cb2e81b33af h1:K24VDJxMqLrZXbjg0i9KdQOi1Am9/NbutBFo3sdgbW0=
+github.com/d2jvkpn/gotk/impls v0.0.0-20230530023800-4cb2e81b33af/go.mod h1:5gE4kojf9qORzYFBT5Lleh62BV3NOCUrgjv5vPjmN3U=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
@@ -349,6 +349,7 @@ go.opentelemetry.io/otel/exporters/otlp/otlptrace v1.16.0 h1:cbsD4cUcviQGXdw8+bo
 go.opentelemetry.io/otel/exporters/otlp/otlptrace v1.16.0/go.mod h1:JgXSGah17croqhJfhByOLVY719k1emAXC8MVhCIJlRs=
 go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracegrpc v1.16.0 h1:TVQp/bboR4mhZSav+MdgXB8FaRho1RC8UwVn3T0vjVc=
 go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracegrpc v1.16.0/go.mod h1:I33vtIe0sR96wfrUcilIzLoA3mLHhRmz9S9Te0S3gDo=
+go.opentelemetry.io/otel/exporters/stdout/stdouttrace v1.16.0 h1:+XWJd3jf75RXJq29mxbuXhCXFDG3S3R4vBUeSI2P7tE=
 go.opentelemetry.io/otel/metric v1.16.0 h1:RbrpwVG1Hfv85LgnZ7+txXioPDoh6EdbZHo26Q3hqOo=
 go.opentelemetry.io/otel/metric v1.16.0/go.mod h1:QE47cpOmkwipPiefDwo2wDzwJrlfxxNYodqc4xnGCo4=
 go.opentelemetry.io/otel/sdk v1.16.0 h1:Z1Ok1YsijYL0CSJpHt4cS3wDDh7p572grzNrBMiMWgE=
