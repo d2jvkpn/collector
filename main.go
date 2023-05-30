@@ -57,15 +57,15 @@ func main() {
 	settings.Meta["consul"] = consul
 
 	if consul {
-		err = internal.LoadConsul(config)
+		err = internal.LoadConsul(config, addr)
 	} else {
-		err = internal.LoadLocal(config)
+		err = internal.LoadLocal(config, addr)
 	}
 	if err != nil {
 		log.Fatalln(err)
 	}
 
-	if shutdown, err = internal.Run(addr); err != nil {
+	if shutdown, err = internal.Run(); err != nil {
 		log.Fatalln(err)
 	}
 	log.Printf(">>> The server is starting, http listening on %s...\n", addr)

@@ -3,20 +3,16 @@ package internal
 import (
 	"context"
 	"errors"
-	"fmt"
+	// "fmt"
 	"time"
 
 	"github.com/d2jvkpn/collector/internal/settings"
 
 	"github.com/d2jvkpn/gotk/impls"
-	"github.com/spf13/viper"
 )
 
-func Run(addr string) (shutdown func() error, err error) {
-	var (
-		vp              *viper.Viper
-		shutdownMetrics func() error
-	)
+func Run() (shutdown func() error, err error) {
+	var shutdownMetrics func() error
 
 	defer func() {
 		if err != nil {
@@ -25,15 +21,9 @@ func Run(addr string) (shutdown func() error, err error) {
 	}()
 
 	// shutdownMetrics, err = wrap.PromFasthttp(addr)
-	if vp = settings.ConfigSub("metrics"); vp == nil {
-		return nil, fmt.Errorf("config.metrics is unset")
-	}
-
-	vp.Set("addr", addr)
-	if shutdownMetrics, err = impls.HttpMetrics(vp, settings.Meta); err != nil {
+	if shutdownMetrics, err = impls.HttpMetrics(_Metrics, settings.Meta); err != nil {
 		return nil, err
 	}
-
 	defer func() {
 		if err != nil {
 			_ = shutdownMetrics()

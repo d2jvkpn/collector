@@ -15,21 +15,21 @@ import (
 	"go.uber.org/zap"
 )
 
-func LoadLocal(config string) (err error) {
+func LoadLocal(config, addr string) (err error) {
 	var vp *viper.Viper
 
 	if vp, err = impls.LoadYamlConfig(config, "Configuration"); err != nil {
 		return err
 	}
 
-	return load(vp)
+	return load(vp, addr)
 }
 
-func LoadConsul(config string) (err error) {
+func LoadConsul(config, addr string) (err error) {
 	return fmt.Errorf("unimplemented")
 }
 
-func load(vp *viper.Viper) (err error) {
+func load(vp *viper.Viper, addr string) (err error) {
 	defer func() {
 		if err != nil {
 			_ = onExit()
@@ -86,6 +86,16 @@ func load(vp *viper.Viper) (err error) {
 	if err != nil {
 		return fmt.Errorf("Handler: %w", err)
 	}
+
+	if _Metrics = settings.ConfigSub("metrics"); vp == nil {
+		return fmt.Errorf("config.metrics is unset")
+	}
+	_Metrics.Set("addr", addr)
+	settings.Meta["metrics_addr"] = _Metrics.GetString("addr")
+	settings.Meta["metrics_prometheus"] = _Metrics.GetBool("prometheus")
+	settings.Meta["metrics_debug"] = _Metrics.GetBool("debug")
+
+	settings.Meta["service_name"] = settings.ServiceName()
 
 	return nil
 }

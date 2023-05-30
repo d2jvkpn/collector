@@ -48,3 +48,8 @@ build:
 
 docker-build:
 	BuildLocal=true bash deployments/build.sh dev
+
+check:
+	go fmt ./...
+	go vet ./...
+	# git diff

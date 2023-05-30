@@ -62,3 +62,7 @@ func DemoConfig() string {
 func DotEnv() string {
 	return _Project.GetString("dotenv")
 }
+
+func ServiceName() string {
+	return _ServiceName
+}
