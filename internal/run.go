@@ -8,7 +8,7 @@ import (
 
 	"github.com/d2jvkpn/collector/internal/settings"
 
-	"github.com/d2jvkpn/gotk/impls"
+	"github.com/d2jvkpn/gotk/cloud-metrics"
 )
 
 func Run() (shutdown func() error, err error) {
@@ -21,7 +21,7 @@ func Run() (shutdown func() error, err error) {
 	}()
 
 	// shutdownMetrics, err = wrap.PromFasthttp(addr)
-	if shutdownMetrics, err = impls.HttpMetrics(_Metrics, settings.Meta); err != nil {
+	if shutdownMetrics, err = metrics.HttpMetrics(_Metrics, settings.Meta); err != nil {
 		return nil, err
 	}
 	defer func() {

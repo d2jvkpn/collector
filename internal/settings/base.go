@@ -5,7 +5,7 @@ import (
 	"fmt"
 
 	"github.com/d2jvkpn/gotk"
-	"github.com/d2jvkpn/gotk/impls"
+	"github.com/d2jvkpn/gotk/cloud-logging"
 	"github.com/spf13/viper"
 )
 
@@ -13,7 +13,7 @@ var (
 	_ServiceName string
 	_Project     *viper.Viper
 	_Config      *viper.Viper
-	Logger       *impls.Logger
+	Logger       *logging.Logger
 	Meta         map[string]any
 )
 

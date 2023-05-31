@@ -9,14 +9,14 @@ import (
 	"github.com/d2jvkpn/collector/models"
 
 	"github.com/Shopify/sarama"
-	"github.com/d2jvkpn/gotk/impls"
+	"github.com/d2jvkpn/gotk"
 	"github.com/spf13/viper"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.uber.org/zap"
 )
 
 type Handler struct {
-	bp     *impls.BatchProcess[models.DataMsg]
+	bp     *gotk.BatchProcess[models.DataMsg]
 	logger *zap.Logger
 	db     *mongo.Database
 }
@@ -39,7 +39,7 @@ func NewHandler(vp *viper.Viper) (handler *Handler, err error) {
 
 	handler = &Handler{}
 
-	handler.bp, err = impls.NewBatchProcess[models.DataMsg](count, interval, handler.InsertMany)
+	handler.bp, err = gotk.NewBatchProcess[models.DataMsg](count, interval, handler.InsertMany)
 	if err != nil {
 		return nil, err
 	}

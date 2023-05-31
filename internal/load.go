@@ -10,7 +10,8 @@ import (
 	"github.com/d2jvkpn/collector/pkg/kafka"
 	"github.com/d2jvkpn/collector/pkg/wrap"
 
-	"github.com/d2jvkpn/gotk/impls"
+	"github.com/d2jvkpn/gotk"
+	"github.com/d2jvkpn/gotk/cloud-logging"
 	"github.com/spf13/viper"
 	"go.uber.org/zap"
 )
@@ -18,7 +19,7 @@ import (
 func LoadLocal(config, addr string) (err error) {
 	var vp *viper.Viper
 
-	if vp, err = impls.LoadYamlConfig(config, "Configuration"); err != nil {
+	if vp, err = gotk.LoadYamlConfig(config, "Configuration"); err != nil {
 		return err
 	}
 
@@ -47,7 +48,7 @@ func load(vp *viper.Viper, addr string) (err error) {
 	// 	return fmt.Errorf("service_name is empty in config")
 	// }
 
-	settings.Logger, err = impls.NewLogger(
+	settings.Logger, err = logging.NewLogger(
 		vp.GetString("log.path"),
 		zap.InfoLevel,
 		vp.GetInt("log.size_mb"),
@@ -71,7 +72,6 @@ func load(vp *viper.Viper, addr string) (err error) {
 		return fmt.Errorf("mongodb.db is empty")
 	}
 
-	//
 	database := _MongoClient.Database(db)
 	err = _Handler.WithLogger(_Logger.Named("handler")).WithDatabase(database).Ok()
 	if err != nil {

@@ -6,7 +6,7 @@ import (
 	"testing"
 
 	"github.com/Shopify/sarama"
-	"github.com/d2jvkpn/gotk/impls"
+	"github.com/d2jvkpn/gotk"
 	"github.com/spf13/viper"
 )
 
@@ -57,7 +57,7 @@ func TestProducer02(t *testing.T) {
 		producer *KafkaProducer
 	)
 
-	if vp, err = impls.LoadYamlConfig("../../configs/local.yaml", "TestConfig"); err != nil {
+	if vp, err = gotk.LoadYamlConfig("../../configs/local.yaml", "TestConfig"); err != nil {
 		t.Fatal(err)
 	}
 
