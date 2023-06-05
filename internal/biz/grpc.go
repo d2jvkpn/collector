@@ -9,6 +9,7 @@ import (
 	"github.com/d2jvkpn/collector/proto"
 
 	grpc_middleware "github.com/grpc-ecosystem/go-grpc-middleware"
+	"github.com/spf13/viper"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc"
@@ -17,12 +18,14 @@ import (
 	"go.uber.org/zap"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/credentials"
 	"google.golang.org/grpc/health"
 	"google.golang.org/grpc/health/grpc_health_v1"
 	"google.golang.org/grpc/status"
 )
 
-func NewGSS(logger *zap.Logger, db *mongo.Database, otel bool) (gss *GrpcServiceServer, err error) {
+func NewGSS(logger *zap.Logger, db *mongo.Database, vp *viper.Viper, otel bool) (
+	gss *GrpcServiceServer, err error) {
 	interceptor := proto.NewServerInterceptor(logger)
 
 	uIntes := []grpc.UnaryServerInterceptor{interceptor.Unary()}
@@ -37,13 +40,18 @@ func NewGSS(logger *zap.Logger, db *mongo.Database, otel bool) (gss *GrpcService
 
 	gss = &GrpcServiceServer{logger: logger, db: db}
 
-	// creds, _ := credentials.NewServerTLSFromFile(certFile, keyFile)
-	// credsOpt := grpc.Creds(creds)
-
 	gss.serverOpts = []grpc.ServerOption{
 		grpc.UnaryInterceptor(grpc_middleware.ChainUnaryServer(uIntes...)),
 		grpc.StreamInterceptor(grpc_middleware.ChainStreamServer(sIntes...)),
-		// credsOpt,
+	}
+
+	if vp.GetBool("tls") {
+		var creds credentials.TransportCredentials
+		creds, err = credentials.NewServerTLSFromFile(vp.GetString("cert"), vp.GetString("key"))
+		if err != nil {
+			return nil, err
+		}
+		gss.serverOpts = append(gss.serverOpts, grpc.Creds(creds))
 	}
 
 	return gss, nil

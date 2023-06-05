@@ -125,9 +125,14 @@ func load(vp *viper.Viper) (err error) {
 	}
 
 	//
+	grpcConfig := settings.ConfigSub("grpc")
+	if grpcConfig == nil {
+		return fmt.Errorf("config.grpc is unset")
+	}
 	_GrpcSS, err = biz.NewGSS(
 		settings.Logger.Named("grpc_interceptor"),
 		database,
+		grpcConfig,
 		otelConfig.GetBool("enable"),
 	)
 	if err != nil {

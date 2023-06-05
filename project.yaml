@@ -38,6 +38,11 @@ config: |
   otel:
     enable: false
     addr: otel-collector:4317
+  #
+  grpc:
+    tls: false
+    cert: configs/server.pem
+    key: configs/server.key
 
 consul: |
     service_name: collector_local
