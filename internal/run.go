@@ -23,18 +23,11 @@ func Run(addr string) (shutdown func() error, err error) {
 			return
 		}
 
-		if listener != nil {
-			_ = listener.Close()
-		}
 		if shutdownMetrics != nil {
 			_ = shutdownMetrics()
 		}
 		_ = onExit()
 	}()
-
-	if listener, err = net.Listen("tcp", addr); err != nil {
-		return nil, fmt.Errorf("net.Listen: %w", err)
-	}
 
 	// shutdownMetrics, err = wrap.PromFasthttp(addr)
 	if shutdownMetrics, err = metrics.HttpMetrics(_Metrics, settings.Meta); err != nil {
@@ -43,13 +36,17 @@ func Run(addr string) (shutdown func() error, err error) {
 
 	_KafkaHandler.Consume()
 
+	if listener, err = net.Listen("tcp", addr); err != nil {
+		return nil, fmt.Errorf("net.Listen: %w", err)
+	}
+
 	go func() {
-		_ = _GrpcServer.Serve(listener)
+		_ = _GrpcSS.Serve(listener)
 	}()
 
 	_Logger.Info(fmt.Sprintf("GRPC server is listening on %s", addr))
 	shutdown = func() error {
-		_GrpcServer.GracefulStop()
+		_GrpcSS.Shutdown()
 		e1 := shutdownMetrics()
 		e2 := onExit()
 

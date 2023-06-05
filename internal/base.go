@@ -9,7 +9,6 @@ import (
 	"github.com/spf13/viper"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.uber.org/zap"
-	"google.golang.org/grpc"
 )
 
 var (
@@ -20,5 +19,5 @@ var (
 	_MongoClient   *mongo.Client
 	_KafkaHandler  *kafka.Handler
 	_RecordHandler *biz.RecordHandler
-	_GrpcServer    *grpc.Server
+	_GrpcSS        *biz.GrpcServiceServer
 )

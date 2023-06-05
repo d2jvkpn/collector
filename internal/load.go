@@ -125,7 +125,14 @@ func load(vp *viper.Viper) (err error) {
 	}
 
 	//
-	loadGrpc(settings.Logger.Named("grpc_interceptor"), database)
+	_GrpcSS, err = biz.NewGSS(
+		settings.Logger.Named("grpc_interceptor"),
+		database,
+		otelConfig.GetBool("enable"),
+	)
+	if err != nil {
+		return fmt.Errorf("NewGSS: %w", err)
+	}
 
 	return nil
 }

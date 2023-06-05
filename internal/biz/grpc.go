@@ -1,11 +1,11 @@
-package internal
+package biz
 
 import (
 	"context"
 	"fmt"
+	"net"
 	"time"
 
-	"github.com/d2jvkpn/collector/internal/biz"
 	"github.com/d2jvkpn/collector/proto"
 
 	grpc_middleware "github.com/grpc-ecosystem/go-grpc-middleware"
@@ -16,39 +16,58 @@ import (
 	"go.uber.org/zap"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/health"
+	"google.golang.org/grpc/health/grpc_health_v1"
 	"google.golang.org/grpc/status"
 )
 
-func loadGrpc(logger *zap.Logger, db *mongo.Database) {
-	interceptor := proto.NewInterceptor(logger)
+func NewGSS(logger *zap.Logger, db *mongo.Database, otel bool) (gss *GrpcServiceServer, err error) {
+	interceptor := proto.NewServerInterceptor(logger)
 
-	uIntes := []grpc.UnaryServerInterceptor{
-		interceptor.Unary(),
-		otelgrpc.UnaryServerInterceptor( /*opts ...Option*/ ),
+	uIntes := []grpc.UnaryServerInterceptor{interceptor.Unary()}
+	if otel {
+		uIntes = append(uIntes, otelgrpc.UnaryServerInterceptor( /*opts ...Option*/ ))
 	}
 
-	sIntes := []grpc.StreamServerInterceptor{
-		interceptor.Stream(),
-		otelgrpc.StreamServerInterceptor( /*opts ...Option*/ ),
+	sIntes := []grpc.StreamServerInterceptor{interceptor.Stream()}
+	if otel {
+		sIntes = append(sIntes, otelgrpc.StreamServerInterceptor( /*opts ...Option*/ ))
 	}
 
-	iters := []grpc.ServerOption{
+	gss = &GrpcServiceServer{logger: logger, db: db}
+
+	// creds, _ := credentials.NewServerTLSFromFile(certFile, keyFile)
+	// credsOpt := grpc.Creds(creds)
+
+	gss.serverOpts = []grpc.ServerOption{
 		grpc.UnaryInterceptor(grpc_middleware.ChainUnaryServer(uIntes...)),
 		grpc.StreamInterceptor(grpc_middleware.ChainStreamServer(sIntes...)),
+		// credsOpt,
 	}
 
-	_GrpcServer = grpc.NewServer(iters...)
-
-	gss := NewGSS(db)
-	proto.RegisterRecordServiceServer(_GrpcServer, gss)
+	return gss, nil
 }
 
 type GrpcServiceServer struct {
-	db *mongo.Database
+	logger     *zap.Logger
+	db         *mongo.Database
+	serverOpts []grpc.ServerOption
+	server     *grpc.Server
 }
 
-func NewGSS(db *mongo.Database) *GrpcServiceServer {
-	return &GrpcServiceServer{db: db}
+func (gss *GrpcServiceServer) Serve(listener net.Listener) (err error) {
+	gss.server = grpc.NewServer(gss.serverOpts...)
+	proto.RegisterRecordServiceServer(gss.server, gss)
+
+	grpc_health_v1.RegisterHealthServer(gss.server, health.NewServer())
+
+	return gss.server.Serve(listener)
+}
+
+func (gss *GrpcServiceServer) Shutdown() {
+	if gss.server != nil {
+		gss.server.GracefulStop()
+	}
 }
 
 func (gss *GrpcServiceServer) Create(ctx context.Context, data *proto.RecordData) (
@@ -73,7 +92,7 @@ func (gss *GrpcServiceServer) Create(ctx context.Context, data *proto.RecordData
 	createdAt := time.Now()
 	at := createdAt.UTC()
 	coll := fmt.Sprintf("records_%dS%d", at.Year(), (at.Month()+2)/3)
-	item := biz.RecordFromData(data, createdAt)
+	item := RecordFromData(data, createdAt)
 
 	result, err := gss.db.Collection(coll).InsertOne(tCtx, item)
 	if err != nil {

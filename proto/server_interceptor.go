@@ -12,15 +12,15 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-type Interceptor struct {
+type ServerInterceptor struct {
 	logger *zap.Logger
 }
 
-func NewInterceptor(logger *zap.Logger) *Interceptor {
-	return &Interceptor{logger: logger}
+func NewServerInterceptor(logger *zap.Logger) *ServerInterceptor {
+	return &ServerInterceptor{logger: logger}
 }
 
-func (inte *Interceptor) Unary() grpc.UnaryServerInterceptor {
+func (inte *ServerInterceptor) Unary() grpc.UnaryServerInterceptor {
 	return func(
 		ctx context.Context, req any, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (
 		resp any, err error) {
@@ -53,7 +53,7 @@ func (inte *Interceptor) Unary() grpc.UnaryServerInterceptor {
 	// return grpc.UnaryInterceptor(call) // grpc.ServerOption
 }
 
-func (inte *Interceptor) Stream() grpc.StreamServerInterceptor {
+func (inte *ServerInterceptor) Stream() grpc.StreamServerInterceptor {
 	return func(
 		srv any, ss grpc.ServerStream, info *grpc.StreamServerInfo, handler grpc.StreamHandler,
 	) (err error) {
