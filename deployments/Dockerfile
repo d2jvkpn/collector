@@ -47,5 +47,5 @@ WORKDIR /home/hello/$APP_NAME
 COPY --from=builder /opt/$APP_NAME/main ./main
 # COPY ./migrations ./migrations
 
-EXPOSE 5010
-CMD ["./main", "-addr=:5010", "-config=configs/prod.yaml", "-release"]
+EXPOSE 5020
+CMD ["./main", "-config=configs/prod.yaml", "-release", "-addr=:5020"]
