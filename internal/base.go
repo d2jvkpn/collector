@@ -9,12 +9,16 @@ import (
 	"github.com/spf13/viper"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.uber.org/zap"
+	"google.golang.org/grpc"
 )
 
 var (
-	_MongoClient  *mongo.Client
-	_Handler      *biz.Handler
-	_KafkaHandler *kafka.Handler
-	_Logger       *zap.Logger
-	_Metrics      *viper.Viper
+	_Logger    *zap.Logger
+	_Metrics   *viper.Viper
+	_CloseOtel func() error
+
+	_MongoClient   *mongo.Client
+	_KafkaHandler  *kafka.Handler
+	_RecordHandler *biz.RecordHandler
+	_GrpcServer    *grpc.Server
 )

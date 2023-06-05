@@ -1,0 +1,25 @@
+syntax = "proto3";
+package proto;
+
+option go_package = "github.com/d2jvkpn/collector/proto";
+
+import "google/protobuf/timestamp.proto";
+
+message RecordData {
+	string serviceName = 1;
+	string serviceVersion = 2;
+	string eventId = 3;
+	google.protobuf.Timestamp eventTimestamp = 4;
+	string bizName = 5;
+	string bizVersion = 6;
+	map<string, string> bindIds = 7;
+	bytes data = 8;
+}
+
+message RecordId {
+	string id = 1;
+}
+
+service RecordService {
+	rpc Create(RecordData) returns(RecordId) {};
+}

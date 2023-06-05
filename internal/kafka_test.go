@@ -5,7 +5,8 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/d2jvkpn/collector/models"
+	// "github.com/d2jvkpn/collector/models"
+	"github.com/d2jvkpn/collector/proto"
 
 	"github.com/Shopify/sarama"
 )
@@ -21,7 +22,7 @@ func TestKafka(t *testing.T) {
 	}
 
 	for i := 0; i < 5; i++ {
-		data := models.NewData("test01", "biz0001").
+		data := proto.NewRecordData("test01", "biz0001").
 			WithEventId(fmt.Sprintf("event%04d", i+1)).
 			WithSvcV("0.1.0").
 			WithBizV("0.2.0").

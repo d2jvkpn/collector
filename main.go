@@ -39,7 +39,7 @@ func main() {
 	}
 
 	flag.StringVar(&config, "config", "configs/local.yaml", "configuration file path")
-	flag.StringVar(&addr, "addr", "0.0.0.0:5011", "prometheus metrics http server")
+	flag.StringVar(&addr, "addr", "0.0.0.0:5021", "prometheus metrics http server")
 	flag.BoolVar(&consul, "consul", false, "using consul")
 
 	flag.Usage = func() {
@@ -57,18 +57,18 @@ func main() {
 	settings.Meta["consul"] = consul
 
 	if consul {
-		err = internal.LoadConsul(config, addr)
+		err = internal.LoadConsul(config)
 	} else {
-		err = internal.LoadLocal(config, addr)
+		err = internal.LoadLocal(config)
 	}
 	if err != nil {
 		log.Fatalln(err)
 	}
 
-	if shutdown, err = internal.Run(); err != nil {
+	if shutdown, err = internal.Run(addr); err != nil {
 		log.Fatalln(err)
 	}
-	log.Printf(">>> The server is starting, http listening on %s...\n", addr)
+	log.Printf(">>> GRPC server is listening on %s...\n", addr)
 
 	quit = make(chan os.Signal, 1)
 	signal.Notify(quit, os.Interrupt, syscall.SIGTERM, syscall.SIGUSR2)

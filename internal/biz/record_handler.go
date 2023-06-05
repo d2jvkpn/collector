@@ -6,22 +6,21 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/d2jvkpn/collector/models"
-
 	"github.com/Shopify/sarama"
 	"github.com/d2jvkpn/gotk"
 	"github.com/spf13/viper"
+	"github.com/valyala/fastjson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.uber.org/zap"
 )
 
-type Handler struct {
-	bp     *gotk.BatchProcess[models.DataMsg]
+type RecordHandler struct {
+	bp     *gotk.BatchProcess[*DataMsg]
 	logger *zap.Logger
 	db     *mongo.Database
 }
 
-func NewHandler(vp *viper.Viper) (handler *Handler, err error) {
+func NewRecordHandler(vp *viper.Viper) (handler *RecordHandler, err error) {
 	var (
 		count    int
 		interval time.Duration
@@ -37,9 +36,9 @@ func NewHandler(vp *viper.Viper) (handler *Handler, err error) {
 		return nil, fmt.Errorf("NewHandler: invalid interval")
 	}
 
-	handler = &Handler{}
+	handler = &RecordHandler{}
 
-	handler.bp, err = gotk.NewBatchProcess[models.DataMsg](count, interval, handler.InsertMany)
+	handler.bp, err = gotk.NewBatchProcess[*DataMsg](count, interval, handler.InsertMany)
 	if err != nil {
 		return nil, err
 	}
@@ -47,21 +46,21 @@ func NewHandler(vp *viper.Viper) (handler *Handler, err error) {
 	return handler, nil
 }
 
-func (handler *Handler) Down() {
+func (handler *RecordHandler) Down() {
 	handler.bp.Down()
 }
 
-func (handler *Handler) WithLogger(logger *zap.Logger) *Handler {
+func (handler *RecordHandler) WithLogger(logger *zap.Logger) *RecordHandler {
 	handler.logger = logger
 	return handler
 }
 
-func (handler *Handler) WithDatabase(db *mongo.Database) *Handler {
+func (handler *RecordHandler) WithDatabase(db *mongo.Database) *RecordHandler {
 	handler.db = db
 	return handler
 }
 
-func (handler *Handler) Ok() (err error) {
+func (handler *RecordHandler) Ok() (err error) {
 	if handler.bp == nil {
 		return fmt.Errorf("bp is unset")
 	}
@@ -77,26 +76,31 @@ func (handler *Handler) Ok() (err error) {
 	return nil
 }
 
-func (handler *Handler) Handle(msg *sarama.ConsumerMessage) {
+func (handler *RecordHandler) Handle(msg *sarama.ConsumerMessage) {
 	var (
 		err  error
-		data models.DataMsg
+		data DataMsg
 	)
 
 	data.Fields = fieldsFromMsg(msg)
 
-	if err = json.Unmarshal(msg.Value, &data.Data); err != nil {
-		handler.logger.Error("failed to unmarshal msg", data.Fields...)
+	if err = json.Unmarshal(msg.Value, &data.RecordData); err != nil {
+		handler.logger.Error(fmt.Sprintf("unmarshal RecordData: %v", err), data.Fields...)
 		return
 	}
 
-	if err = handler.bp.Recv(data); err != nil {
+	if err = fastjson.ValidateBytes(data.RecordData.Data); err != nil {
+		handler.logger.Error(fmt.Sprintf("invalid RecordData.Data: %v", err), data.Fields...)
+		return
+	}
+
+	if err = handler.bp.Recv(&data); err != nil {
 		handler.logger.Error(fmt.Sprintf("unexpected recv: %v", err), data.Fields...)
 		return
 	}
 }
 
-func (handler *Handler) InsertMany(dataList []models.DataMsg) {
+func (handler *RecordHandler) InsertMany(dataList []*DataMsg) {
 	var (
 		err       error
 		createdAt time.Time
@@ -112,11 +116,11 @@ func (handler *Handler) InsertMany(dataList []models.DataMsg) {
 	items = make([]any, 0, len(dataList))
 
 	for i := range dataList {
-		items = append(items, models.RecordFromData(dataList[i].Data, createdAt))
+		items = append(items, RecordFromData(dataList[i].RecordData, createdAt))
 	}
 
 	at := createdAt.UTC()
-	coll := fmt.Sprintf("records_%dS%d", at.Year(), at.Month()%3)
+	coll := fmt.Sprintf("records_%dS%d", at.Year(), (at.Month()+2)/3)
 
 	result, err = handler.db.
 		Collection(coll).

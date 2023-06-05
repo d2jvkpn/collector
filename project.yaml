@@ -31,8 +31,13 @@ config: |
     interval: 1m
   #
   metrics:
+    addr: :5011
     prometheus: true
     debug: true
+  #
+  otel:
+    enable: false
+    addr: otel-collector:4317
 
 consul: |
     service_name: collector_local
