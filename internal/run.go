@@ -47,6 +47,7 @@ func Run(addr string) (shutdown func() error, err error) {
 		_ = _GrpcServer.Serve(listener)
 	}()
 
+	_Logger.Info(fmt.Sprintf("GRPC server is listening on %s", addr))
 	shutdown = func() error {
 		_GrpcServer.GracefulStop()
 		e1 := shutdownMetrics()
@@ -59,6 +60,8 @@ func Run(addr string) (shutdown func() error, err error) {
 }
 
 func onExit() (err error) {
+	_Logger.Info(fmt.Sprintf("GRPC server is shutdowning donw"))
+
 	if _KafkaHandler != nil {
 		err = errors.Join(err, _KafkaHandler.Close())
 	}

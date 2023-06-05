@@ -6,7 +6,6 @@ import (
 	"time"
 
 	"go.uber.org/zap"
-
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/metadata"
@@ -37,7 +36,7 @@ func (inte *Interceptor) Unary() grpc.UnaryServerInterceptor {
 			return nil, status.Errorf(codes.Unauthenticated, "no netadata")
 		}
 
-		inte.logger.Debug("unary", zap.Any("md", md))
+		inte.logger.Debug(info.FullMethod, zap.Any("md", md))
 
 		resp, err = handler(ctx, req)
 		latency := zap.String("latency", fmt.Sprintf("%s", time.Since(start)))
@@ -66,12 +65,11 @@ func (inte *Interceptor) Stream() grpc.StreamServerInterceptor {
 		)
 
 		start = time.Now()
-
 		if md, ok = metadata.FromIncomingContext(ss.Context()); !ok {
 			return status.Errorf(codes.Unauthenticated, "no netadata")
 		}
 
-		inte.logger.Debug("stream", zap.Any("md", md))
+		inte.logger.Debug(info.FullMethod, zap.Any("md", md))
 
 		err = handler(srv, ss)
 		latency := zap.String("latency", fmt.Sprintf("%s", time.Since(start)))

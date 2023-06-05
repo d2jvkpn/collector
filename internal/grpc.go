@@ -11,6 +11,8 @@ import (
 	grpc_middleware "github.com/grpc-ecosystem/go-grpc-middleware"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc"
+	"go.opentelemetry.io/otel"
+	"go.opentelemetry.io/otel/trace"
 	"go.uber.org/zap"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
@@ -49,7 +51,23 @@ func NewGSS(db *mongo.Database) *GrpcServiceServer {
 	return &GrpcServiceServer{db: db}
 }
 
-func (gss *GrpcServiceServer) Create(ctx context.Context, data *proto.RecordData) (*proto.RecordId, error) {
+func (gss *GrpcServiceServer) Create(ctx context.Context, data *proto.RecordData) (
+	id *proto.RecordId, err error) {
+
+	var (
+		tracer trace.Tracer
+		span   trace.Span
+	)
+
+	tracer = otel.Tracer("Create")
+	_, span = tracer.Start(ctx, "Create")
+	defer func() {
+		if err != nil {
+			span.AddEvent(err.Error())
+		}
+		span.End()
+	}()
+
 	// return nil, status.Errorf(codes.Unauthenticated, "")
 	createdAt := time.Now()
 	at := createdAt.UTC()
