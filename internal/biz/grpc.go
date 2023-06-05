@@ -9,6 +9,7 @@ import (
 	"github.com/d2jvkpn/collector/proto"
 
 	grpc_middleware "github.com/grpc-ecosystem/go-grpc-middleware"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc"
 	"go.opentelemetry.io/otel"
@@ -99,5 +100,5 @@ func (gss *GrpcServiceServer) Create(ctx context.Context, data *proto.RecordData
 		return nil, status.Errorf(codes.Internal, "")
 	}
 
-	return &proto.RecordId{Id: fmt.Sprintf("%v", result.InsertedID)}, nil
+	return &proto.RecordId{Id: result.InsertedID.(primitive.ObjectID).Hex()}, nil
 }
