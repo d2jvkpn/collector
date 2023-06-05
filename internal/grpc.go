@@ -55,12 +55,13 @@ func (gss *GrpcServiceServer) Create(ctx context.Context, data *proto.RecordData
 	id *proto.RecordId, err error) {
 
 	var (
+		tCtx   context.Context
 		tracer trace.Tracer
 		span   trace.Span
 	)
 
 	tracer = otel.Tracer("Create")
-	_, span = tracer.Start(ctx, "Create")
+	tCtx, span = tracer.Start(ctx, "Create")
 	defer func() {
 		if err != nil {
 			span.AddEvent(err.Error())
@@ -74,7 +75,7 @@ func (gss *GrpcServiceServer) Create(ctx context.Context, data *proto.RecordData
 	coll := fmt.Sprintf("records_%dS%d", at.Year(), (at.Month()+2)/3)
 	item := biz.RecordFromData(data, createdAt)
 
-	result, err := gss.db.Collection(coll).InsertOne(context.TODO(), item)
+	result, err := gss.db.Collection(coll).InsertOne(tCtx, item)
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "")
 	}
