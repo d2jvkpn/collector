@@ -32,7 +32,8 @@ create-db:
 	  'db = db.getSiblingDB("admin"); db.changeUserPassword("root", passwordPrompt())'
 
 connect-db:
-	docker exec -it mongo_db mongosh --username root --password
+	# docker exec -it mongo_db mongosh --username=root --port=27017
+	docker exec -it mongo_db mongosh mongodb://root@localhost:27017
 
 run:
 	go run main.go --config=configs/local.yaml --addr=0.0.0.0:5021
