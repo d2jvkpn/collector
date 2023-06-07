@@ -4,7 +4,7 @@ go 1.20
 
 require (
 	github.com/Shopify/sarama v1.38.1
-	github.com/d2jvkpn/gotk v0.0.0-20230531014145-cb97ee5e7878
+	github.com/d2jvkpn/gotk v0.0.0-20230607121908-d1499f89ff59
 	github.com/d2jvkpn/gotk/cloud-logging v0.0.0-20230531014145-cb97ee5e7878
 	github.com/d2jvkpn/gotk/cloud-metrics v0.0.0-20230531014145-cb97ee5e7878
 	github.com/d2jvkpn/gotk/cloud-tracing v0.0.0-20230531014145-cb97ee5e7878
