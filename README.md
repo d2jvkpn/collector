@@ -2,7 +2,8 @@
 A data collection program developed using Kafka, MongoDB, and Golang.
 
 #### 1. Dependent services
-- mongodb: https://github.com/d2jvkpn/deploy/tree/dev/productions/mongodb
+- mongodb: https://github.com/d2jvkpn/deploy/tree/dev/productions/mongodb or
+https://github.com/d2jvkpn/deploy/tree/dev/swarm/mongo-cluster
 - kafka: https://github.com/d2jvkpn/deploy/tree/dev/swarm/kafka-kraft
 
 #### 2. Docker images
