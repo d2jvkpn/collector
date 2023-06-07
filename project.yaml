@@ -45,6 +45,5 @@ config: |
     key: configs/server.key
 
 consul: |
-    service_name: collector_local
     #
-    unimplemented
+    TODO:

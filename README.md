@@ -1,15 +1,35 @@
 # collector
 A data collection program developed using Kafka, MongoDB, and Golang.
 
-#### 1. Dependent services
-- mongodb: https://github.com/d2jvkpn/deploy/tree/dev/productions/mongodb or
-https://github.com/d2jvkpn/deploy/tree/dev/swarm/mongo-cluster
-- kafka: https://github.com/d2jvkpn/deploy/tree/dev/swarm/kafka-kraft
+#### 1. Techs
+- programming language: golang, go1.20.4
+  - https://go.dev
+- logging: uber-go/zap
+  - https://github.com/uber-go/zap
+- metrics: prometheus
+  - https://prometheus.io/
+  - https://github.com/d2jvkpn/deploy/tree/dev/productions/cloud-native
+- tacing: opentelemetry
+  - https://opentelemetry.io/
+  - https://github.com/d2jvkpn/deploy/tree/dev/productions/cloud-native
+- database: mongodb
+  - https://www.mongodb.com/
+  - https://github.com/d2jvkpn/deploy/tree/dev/swarm/mongo-cluster
+  - https://github.com/d2jvkpn/deploy/tree/dev/productions/mongodb
+- message queue: kafka
+  - https://kafka.apache.org/
+  - https://github.com/d2jvkpn/deploy/tree/dev/swarm/kafka-kraft
+- RPC: grpc
+  - https://grpc.io/
+- docker images
+  - registry.cn-shanghai.aliyuncs.com/d2jvkpn/collector:dev
+- devops:
+  - docker, docker-compose
+  - TODO: kubernetes
+- service discovery
+  - TODO: consul
 
-#### 2. Docker images
-- registry.cn-shanghai.aliyuncs.com/d2jvkpn/collector:dev
-
-#### 3. Configuration
+#### 2. Configuration
 ```yaml
 service_name: collector_local
 
@@ -36,9 +56,23 @@ kafka:
 bp:
   count: 1000
   interval: 1m
+
+metrics:
+  addr: :5011
+  prometheus: true
+  debug: true
+
+otel:
+  enable: false
+  addr: otel-collector:4317
+
+grpc:
+  tls: false
+  cert: configs/server.pem
+  key: configs/server.key
 ```
 
-#### 4. Run
+#### 3. Run
 ```bash
-go main.go --config=configs/local.yaml --addr=0.0.0.0:5011
+go main.go --config=configs/local.yaml --addr=0.0.0.0:5021
 ```
