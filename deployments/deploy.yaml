@@ -18,7 +18,7 @@ services:
     container_name: collector-app_${APP_ENV}
     restart: always
     depends_on: ["mongo"]
-    networks: ["net", "kafka"]
+    networks: ["net", "kafka", "otel"]
     # network_mode: bridge
     # network_mode: host
     ports: ["${PORT}:${PORT}"]
@@ -36,5 +36,9 @@ networks:
     external: false
   kafka:
     name: kafka
+    driver: bridge
+    external: true
+  otel:
+    name: otel
     driver: bridge
     external: true
