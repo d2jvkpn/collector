@@ -1,6 +1,7 @@
 package kafka
 
 import (
+	"context"
 	"fmt"
 	"log"
 	"testing"
@@ -66,11 +67,11 @@ func TestProducer02(t *testing.T) {
 	}
 	fmt.Printf("==> %#v\n", producer)
 
-	msg, ok := producer.SendMsg([]byte("hello world"))
-	fmt.Printf("~~~ ok: %t, msg: %#v\n", ok, msg)
+	msg := producer.SendMsg(context.TODO(), []byte("hello world"))
+	fmt.Printf("~~~ msg: %#v\n", msg)
 
 	if err = producer.Close(); err != nil {
 		t.Fatal(err)
 	}
-	fmt.Printf("~~~ ok: %t, msg: %#v\n", ok, msg)
+	fmt.Printf("~~~ msg: %#v\n", msg)
 }

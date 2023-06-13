@@ -14,6 +14,7 @@ type Config struct {
 
 	// consumer
 	GroupId string `mapstructure:"group_id"` // default
+
 	// producer
 	Key string `mapstructure:"key"`
 }

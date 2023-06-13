@@ -1,6 +1,7 @@
 package kafka
 
 import (
+	"context"
 	"fmt"
 
 	"github.com/Shopify/sarama"
@@ -22,8 +23,8 @@ func NewKafkaProducer(vp *viper.Viper, field string) (producer *KafkaProducer, e
 		return nil, err
 	}
 
-	if config.Key == "" {
-		return nil, fmt.Errorf("invlaid topic or key")
+	if config.Topic == "" || config.Key == "" {
+		return nil, fmt.Errorf("neither the topic nor the key is set")
 	}
 
 	producer = &KafkaProducer{config: *config}
@@ -36,15 +37,18 @@ func NewKafkaProducer(vp *viper.Viper, field string) (producer *KafkaProducer, e
 	return producer, nil
 }
 
-func (producer *KafkaProducer) SendMsg(bts []byte) (msg *sarama.ProducerMessage, ok bool) {
+func (producer *KafkaProducer) SendMsg(ctx context.Context, bts []byte) (msg *sarama.ProducerMessage) {
 	msg = &sarama.ProducerMessage{
 		Topic: producer.config.Topic,
 		Key:   sarama.StringEncoder(producer.config.Key),
 		Value: sarama.ByteEncoder(bts),
 	}
 
-	producer.producer.Input() <- msg
-	return msg, true
+	select {
+	case <-ctx.Done():
+	case producer.producer.Input() <- msg:
+	}
+	return msg
 }
 
 func (producer *KafkaProducer) Close() (err error) {
