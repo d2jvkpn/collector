@@ -14,11 +14,11 @@ A data collection program developed using Kafka, MongoDB, and Golang.
   - https://github.com/d2jvkpn/deploy/tree/dev/productions/cloud-native
 - database: mongodb
   - https://www.mongodb.com/
-  - https://github.com/d2jvkpn/deploy/tree/dev/swarm/mongo_sharded-cluster
+  - https://github.com/d2jvkpn/deploy/tree/dev/swarm/mongo
   - https://github.com/d2jvkpn/deploy/tree/dev/productions/mongodb
 - message queue: kafka
   - https://kafka.apache.org/
-  - https://github.com/d2jvkpn/deploy/tree/dev/swarm/kafka-kraft
+  - https://github.com/d2jvkpn/deploy/tree/dev/swarm/kafka_kraft
 - RPC: grpc
   - https://grpc.io/
 - docker images
