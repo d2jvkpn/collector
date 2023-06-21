@@ -12,7 +12,7 @@ type ClientInterceptor struct {
 	Headers map[string]string
 }
 
-func (inte *ClientInterceptor) attachToken(ctx context.Context) context.Context {
+func (inte *ClientInterceptor) attach(ctx context.Context) context.Context {
 	kv := make([]string, 0, len(inte.Headers)*2)
 
 	for k, v := range inte.Headers {
@@ -28,7 +28,7 @@ func (inte *ClientInterceptor) Unary() grpc.UnaryClientInterceptor {
 		cc *grpc.ClientConn, invoker grpc.UnaryInvoker, opts ...grpc.CallOption,
 	) (err error) {
 
-		return invoker(inte.attachToken(ctx), method, req, reply, cc, opts...)
+		return invoker(inte.attach(ctx), method, req, reply, cc, opts...)
 	}
 }
 
@@ -38,6 +38,6 @@ func (inte *ClientInterceptor) Stream() grpc.StreamClientInterceptor {
 		method string, streamer grpc.Streamer, opts ...grpc.CallOption,
 	) (client grpc.ClientStream, err error) {
 
-		return streamer(inte.attachToken(ctx), desc, cc, method, opts...)
+		return streamer(inte.attach(ctx), desc, cc, method, opts...)
 	}
 }
