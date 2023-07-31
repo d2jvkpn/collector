@@ -5,13 +5,13 @@ _path=$(dirname $0 | xargs -i readlink -f {})
 
 
 #### install tools
-v1=23.2
+version=23.2
 
 mkdir -p target
-wget -P target https://github.com/protocolbuffers/protobuf/releases/download/v${v1}/protoc-${v1}-linux-x86_64.zip
+wget -P target https://github.com/protocolbuffers/protobuf/releases/download/v${version}/protoc-${version}-linux-x86_64.zip
 
-mkdir -p ~/Apps/protoc-${v1}
-unzip target/protoc-${v1}-linux-x86_64.zip -d ~/Apps/protoc-${v1}
+mkdir -p ~/Apps/protoc-${version}
+unzip target/protoc-${version}-linux-x86_64.zip -d ~/Apps/protoc-${version}
 
 ####
 go get google.golang.org/protobuf@v1.30.0

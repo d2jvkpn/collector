@@ -51,13 +51,13 @@ done
 
 echo ">>> build image: $image:$tag..."
 
-GO_ldflags="-X main.build_time=$build_time -X main.git_branch=$git_branch \
-  -X main.git_commit_id=$git_commit_id -X main.git_commit_time=$git_commit_time \
+GO_ldflags="-X main.build_time=$build_time \
+  -X main.git_branch=$git_branch \
+  -X main.git_commit_id=$git_commit_id \
+  -X main.git_commit_time=$git_commit_time \
   -X main.git_tree_state=$git_tree_state"
 
-df=${_path}/Dockerfile
-
-docker build --no-cache --file $df \
+docker build --no-cache --file ${_path}/Dockerfile \
   --build-arg=REGION="$REGION" \
   --build-arg=APP="$app" \
   --build-arg=GO_ldflags="$GO_ldflags" \

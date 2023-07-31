@@ -35,8 +35,11 @@ connect-db:
 	# docker exec -it mongo_db mongosh --username=root --port=27017
 	docker exec -it mongo_db mongosh mongodb://root@localhost:27017
 
-run:
+run-local:
 	go run main.go --config=configs/local.yaml --addr=0.0.0.0:5021
+
+run-dev:
+	ssh remove_server "cd docker_dev/collector_dev && docker-compose pull && docker-compose up -d"
 
 get-password:
 	yq .mongodb.uri configs/local.yaml | grep -o ":[^:]*@" | sed 's/^.//; s/.$//'
@@ -49,7 +52,7 @@ build:
 
 docker-build:
 	# GIT_Pull, DOCKER_Pull
-	REGION=cn bash deployments/build.sh dev
+	REGION=cn bash deployments/docker_build.sh dev
 
 check:
 	go fmt ./...
