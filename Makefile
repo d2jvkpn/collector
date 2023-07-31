@@ -52,7 +52,8 @@ build:
 
 docker-build:
 	# GIT_Pull, DOCKER_Pull
-	REGION=cn bash deployments/docker_build.sh dev
+	# REGION=cn bash deployments/docker_build.sh dev
+	ssh -F ssh.conf build_host "cd docker_build/collector && git pull && bash deployments/docker_build.sh dev"
 
 check:
 	go fmt ./...

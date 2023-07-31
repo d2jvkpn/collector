@@ -27,3 +27,4 @@ configs/
 wk*/
 target/
 docker-compose.yaml
+ssh.conf
