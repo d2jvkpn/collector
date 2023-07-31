@@ -46,7 +46,6 @@ WORKDIR /home/d2jvkpn/$APP
 
 COPY --from=builder /opt/$APP/main ./main
 # COPY ./migrations ./migrations
-RUN chown -R d2jvkpn:d2jvkpn /home/d2jvkpn/$APP
 
 EXPOSE 5020
 CMD ["./main", "-config=configs/prod.yaml", "-release", "-addr=:5020"]
