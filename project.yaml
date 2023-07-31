@@ -1,6 +1,7 @@
-project: collector
+app: collector
 repository: https://github.com/d2jvkpn/collctor
-version: 0.1.0
+image: registry.cn-shanghai.aliyuncs.com/d2jvkpn/collector
+version: 0.2.0
 
 # configs/{{.APP_ENV}}.yaml
 config: |

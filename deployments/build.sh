@@ -3,22 +3,29 @@ set -eu -o pipefail
 _wd=$(pwd)
 _path=$(dirname $0 | xargs -i readlink -f {})
 
-####
+#### load
 [ $# -eq 0 ] && { >&2 echo "Argument {branch} is required!"; exit 1; }
 git_branch=$1
+app=$(yq .app project.yaml)
+image=$(yq .image project.yaml)
+tag=${git_branch}-$(yq .version project.yaml)
 
-image="registry.cn-shanghai.aliyuncs.com/d2jvkpn/collector"
-tag=$git_branch
-name=collector
-BuildLocal=$(printenv BuildLocal || true)
+# env variables
+GIT_Pull=$(printenv GIT_Pull || true)
+DOCKER_Pull=$(printenv DOCKER_Pull || true)
+REGION=$(printenv REGION || true)
 
-function onExit {
+#### git
+function on_exit {
     git checkout dev # --force
 }
-trap onExit EXIT
+trap on_exit EXIT
 
 git checkout $git_branch
-[[ "$BuildLocal" != "true" ]] && git pull --no-edit
+
+if [[ "$GIT_Pull" != "false" ]]; then
+    git pull --no-edit
+fi
 
 build_time=$(date +'%FT%T%:z')
 git_branch="$(git rev-parse --abbrev-ref HEAD)" # current branch
@@ -31,7 +38,9 @@ unpushed=$(git diff origin/$git_branch..HEAD --name-status)
 [[ ! -z "$uncommitted$unpushed" ]] && git_tree_state="dirty"
 
 ####
-[[ "$BuildLocal" != "true" ]] && \
+echo "==> docker build $image:$tag"
+
+[[ "$DOCKER_Pull" != "false" ]] && \
 for base in $(awk '/^FROM/{print $2}' ${_path}/Dockerfile); do
     echo ">>> pull $base"
     docker pull $base
@@ -49,15 +58,18 @@ GO_ldflags="-X main.build_time=$build_time -X main.git_branch=$git_branch \
 df=${_path}/Dockerfile
 
 docker build --no-cache --file $df \
-  --build-arg=BuildLocal="$BuildLocal" \
+  --build-arg=REGION="$REGION" \
+  --build-arg=APP="$app" \
   --build-arg=GO_ldflags="$GO_ldflags" \
   --tag $image:$tag ./
 
-docker image prune --force --filter label=stage=${name}_builder &> /dev/null
+docker image prune --force --filter label=stage=${app}_builder &> /dev/null
 
 #### push image
 echo ">>> push image: $image:$tag..."
 docker push $image:$tag
 
 images=$(docker images --filter "dangling=true" --quiet $image)
-for img in $images; do docker rmi $img || true; done &> /dev/null
+for img in $images; do
+    docker rmi $img || true
+done &> /dev/null

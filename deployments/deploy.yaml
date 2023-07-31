@@ -24,9 +24,9 @@ services:
     ports: ["${PORT}:${PORT}"]
     environment: ["TZ=Asia/Shanghai"]
     volumes:
-    - ./configs/:/home/hello/collector/configs/
-    - ./logs/:/home/hello/collector/logs/
-    # - ./data/:/home/hello/collector/data/
+    - ./configs/:/home/d2jvkpn/collector/configs/
+    - ./logs/:/home/d2jvkpn/collector/logs/
+    # - ./data/:/home/d2jvkpn/collector/data/
     command: ["./main", "--config=configs/prod.yaml", "--addr=:${PORT}"]
 
 networks:

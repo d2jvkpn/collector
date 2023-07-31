@@ -48,7 +48,8 @@ build:
 	  -X main.git_branch=$(git_branch) -X main.git_commit_id=unknown" main.go
 
 docker-build:
-	BuildLocal=true bash deployments/build.sh dev
+	# GIT_Pull, DOCKER_Pull
+	REGION=cn bash deployments/build.sh dev
 
 check:
 	go fmt ./...
