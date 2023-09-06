@@ -50,11 +50,11 @@ build:
 	go build -o target/main -ldflags="-X main.build_time=$(build_time) \
 	  -X main.git_branch=$(git_branch) -X main.git_commit_id=unknown" main.go
 
-docker-build:
+docker_build:
 	# GIT_Pull, DOCKER_Pull
-	# REGION=cn bash deployments/docker-build.sh dev
+	# REGION=cn bash deployments/docker_build.sh dev
 	ssh -F configs/ssh.conf build_host \
-	  "cd docker_build/collector && git pull && bash deployments/docker-build.sh dev"
+	  "cd docker_build/collector && git pull && bash deployments/docker_build.sh dev"
 
 check:
 	go fmt ./...

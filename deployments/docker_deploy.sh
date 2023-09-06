@@ -7,7 +7,7 @@ name=collector
 mkdir -p configs logs data/mongo
 
 export TAG=$1 APP_ENV=$2 PORT=$3
-envsubst < ${_path}/docker-deploy.yaml > docker-compose.yaml
+envsubst < ${_path}/docker_deploy.yaml > docker-compose.yaml
 
 # docker-compose pull
 [[ ! -z "$(docker ps --all --quiet --filter name=${name}_$APP_ENV)" ]] &&
