@@ -8,7 +8,11 @@ _path=$(dirname $0 | xargs -i readlink -f {})
 git_branch=$1
 app=$(yq .app project.yaml)
 image=$(yq .image project.yaml)
-tag=${git_branch}-$(yq .version project.yaml)
+
+tag=$(yq .version project.yaml)
+if [[ "$git_branch" != "main" && "$git_branch" != "master" ]]; then
+    tag=${git_branch}-$tag
+fi
 
 # env variables
 GIT_Pull=$(printenv GIT_Pull || true)

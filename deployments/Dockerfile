@@ -1,12 +1,13 @@
 FROM golang:1-alpine AS builder
 
+ARG APP=${APP}
+ARG TZ=${TZ:-Asia/Shanghai}
 ARG REGION=${REGION}
 ARG GO_ldflags=${GO_ldflags}
-ARG APP=${APP}
-ENV TZ="Asia/Shanghai"
 
 LABEL stage=${APP}_builder
 
+# sed -i 's/dl-cdn.alpinelinux.org/mirror.tuna.tsinghua.edu.cn/g' /etc/apk/repositories;
 RUN if [ "$REGION" = "cn" ]; then \
     echo "==> REGION: $REGION"; \
     sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories; \
@@ -29,9 +30,9 @@ RUN go build -o main -ldflags="-w -s ${GO_ldflags}" main.go
 ####
 FROM alpine
 
-ARG REGION=${REGION}
 ARG APP=${APP}
-ENV TZ="Asia/Shanghai"
+ARG TZ=${TZ:-Asia/Shanghai}
+ARG REGION=${REGION}
 
 RUN if [ "$REGION" = "cn" ]; then \
     echo "==> REGION: $REGION"; \
