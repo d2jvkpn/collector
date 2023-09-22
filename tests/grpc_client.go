@@ -8,6 +8,7 @@ import (
 
 	"github.com/d2jvkpn/collector/proto"
 
+	"github.com/d2jvkpn/gotk/cloud-logging"
 	"google.golang.org/grpc"
 )
 
@@ -49,7 +50,7 @@ func main() {
 
 	ctx = context.TODO()
 
-	inte := proto.ClientInterceptor{
+	inte := logging.GrpcCliLogger{
 		Headers: map[string]string{},
 	}
 

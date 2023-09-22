@@ -8,6 +8,7 @@ import (
 
 	"github.com/d2jvkpn/collector/proto"
 
+	"github.com/d2jvkpn/gotk/cloud-logging"
 	grpc_middleware "github.com/grpc-ecosystem/go-grpc-middleware"
 	"github.com/spf13/viper"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -26,7 +27,7 @@ import (
 
 func NewGSS(logger *zap.Logger, db *mongo.Database, vp *viper.Viper, otel bool) (
 	gss *GrpcServiceServer, err error) {
-	interceptor := proto.NewServerInterceptor(logger)
+	interceptor := logging.NewGrpcSrvLogger(logger)
 
 	uIntes := []grpc.UnaryServerInterceptor{interceptor.Unary()}
 	if otel {

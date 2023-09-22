@@ -44,13 +44,13 @@ run-dev:
 get-password:
 	yq .mongodb.uri configs/local.yaml | grep -o ":[^:]*@" | sed 's/^.//; s/.$//'
 
-build:
+build_bin:
 	echo ">>> git branch: $(git_branch)"
 	mkdir -p target
 	go build -o target/main -ldflags="-X main.build_time=$(build_time) \
 	  -X main.git_branch=$(git_branch) -X main.git_commit_id=unknown" main.go
 
-docker_build:
+build_remote:
 	# GIT_Pull, DOCKER_Pull
 	# REGION=cn bash deployments/docker_build.sh dev
 	ssh -F configs/ssh.conf build_host \
