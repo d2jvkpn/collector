@@ -5,7 +5,7 @@ import (
 	"log"
 	"testing"
 
-	"github.com/Shopify/sarama"
+	"github.com/IBM/sarama"
 )
 
 // go test -run TestConsumer -- -addrs=localhost:29091

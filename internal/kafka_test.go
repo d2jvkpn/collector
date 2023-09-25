@@ -8,7 +8,7 @@ import (
 	// "github.com/d2jvkpn/collector/models"
 	"github.com/d2jvkpn/collector/proto"
 
-	"github.com/Shopify/sarama"
+	"github.com/IBM/sarama"
 )
 
 func TestKafka(t *testing.T) {

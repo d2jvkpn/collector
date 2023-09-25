@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/Shopify/sarama"
+	"github.com/IBM/sarama"
 	"github.com/d2jvkpn/gotk"
 	"github.com/spf13/viper"
 	"github.com/valyala/fastjson"

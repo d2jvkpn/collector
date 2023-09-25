@@ -5,11 +5,11 @@ go 1.21
 toolchain go1.21.1
 
 require (
-	github.com/Shopify/sarama v1.38.1
-	github.com/d2jvkpn/gotk v0.0.0-20230921092617-4570de705da5
-	github.com/d2jvkpn/gotk/cloud-logging v0.0.0-20230921092617-4570de705da5
-	github.com/d2jvkpn/gotk/cloud-metrics v0.0.0-20230922155623-a523935524f5
-	github.com/d2jvkpn/gotk/cloud-tracing v0.0.0-20230922155623-a523935524f5
+	github.com/IBM/sarama v1.41.2
+	github.com/d2jvkpn/gotk v0.0.0-20230925023207-f923b8bd92bb
+	github.com/d2jvkpn/gotk/cloud-logging v0.0.0-20230925023207-f923b8bd92bb
+	github.com/d2jvkpn/gotk/cloud-metrics v0.0.0-20230925023207-f923b8bd92bb
+	github.com/d2jvkpn/gotk/cloud-tracing v0.0.0-20230925023207-f923b8bd92bb
 	github.com/grpc-ecosystem/go-grpc-middleware v1.4.0
 	github.com/spf13/viper v1.16.0
 	github.com/valyala/fastjson v1.6.4
@@ -30,7 +30,7 @@ require (
 	github.com/cespare/xxhash/v2 v2.2.0 // indirect
 	github.com/chenzhuoyu/base64x v0.0.0-20230717121745-296ad89f973d // indirect
 	github.com/chenzhuoyu/iasm v0.9.0 // indirect
-	github.com/d2jvkpn/gotk/ginx v0.0.0-20230921092617-4570de705da5 // indirect
+	github.com/d2jvkpn/gotk/ginx v0.0.0-20230925023207-f923b8bd92bb // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/eapache/go-resiliency v1.4.0 // indirect
 	github.com/eapache/go-xerial-snappy v0.0.0-20230731223053-c322873962e3 // indirect
@@ -80,7 +80,7 @@ require (
 	github.com/spf13/jwalterweatherman v1.1.0 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/subosito/gotenv v1.6.0 // indirect
-	github.com/tidwall/gjson v1.16.0 // indirect
+	github.com/tidwall/gjson v1.17.0 // indirect
 	github.com/tidwall/match v1.1.1 // indirect
 	github.com/tidwall/pretty v1.2.1 // indirect
 	github.com/twitchyliquid64/golang-asm v0.15.1 // indirect
