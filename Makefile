@@ -50,6 +50,9 @@ build_bin:
 	go build -o target/main -ldflags="-X main.build_time=$(build_time) \
 	  -X main.git_branch=$(git_branch) -X main.git_commit_id=unknown" main.go
 
+build_local:
+	REGION=cn bash deployments/docker_build.sh dev
+
 build_remote:
 	# GIT_Pull, DOCKER_Pull
 	# REGION=cn bash deployments/docker_build.sh dev
