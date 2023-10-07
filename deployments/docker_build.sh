@@ -15,7 +15,12 @@ tag=${DOCKER_Tag:-$tag}
 # env variables
 GIT_Pull=$(printenv GIT_Pull || true)
 DOCKER_Pull=$(printenv DOCKER_Pull || true)
-REGION=$(printenv REGION || true)
+BUILD_Region=$(printenv BUILD_Region || true)
+
+[ -f .env ] && {
+  2>&1 echo "==> load .env"
+  . .env
+}
 
 #### git
 function on_exit() {
@@ -60,7 +65,7 @@ GO_ldflags="-X main.build_time=$build_time \
   -X main.git_tree_state=$git_tree_state"
 
 docker build --no-cache --file ${_path}/Dockerfile \
-  --build-arg=REGION="$REGION" \
+  --build-arg=BUILD_Region="$BUILD_Region" \
   --build-arg=APP="$app" \
   --build-arg=GO_ldflags="$GO_ldflags" \
   --tag $image:$tag ./

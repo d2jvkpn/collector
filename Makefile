@@ -49,13 +49,14 @@ build_bin:
 	mkdir -p target
 	go build -o target/main -ldflags="-X main.build_time=$(build_time) \
 	  -X main.git_branch=$(git_branch) -X main.git_commit_id=unknown" main.go
+	ls -al target
 
 build_local:
-	DOCKER_Tag=dev REGION=cn bash deployments/docker_build.sh dev
+	DOCKER_Tag=dev BUILD_Region=cn bash deployments/docker_build.sh dev
 
 build_remote:
 	# GIT_Pull, DOCKER_Pull
-	# REGION=cn bash deployments/docker_build.sh dev
+	# BUILD_Region=cn bash deployments/docker_build.sh dev
 	ssh -F configs/ssh.conf build_host \
 	  "cd docker_build/collector && git pull && bash deployments/docker_build.sh dev"
 

@@ -2,14 +2,14 @@ FROM golang:1-alpine AS builder
 
 ARG APP=${APP}
 ARG TZ=${TZ:-Asia/Shanghai}
-ARG REGION=${REGION}
+ARG BUILD_Region=${BUILD_Region}
 ARG GO_ldflags=${GO_ldflags}
 
 LABEL stage=${APP}_builder
 
 # sed -i 's/dl-cdn.alpinelinux.org/mirror.tuna.tsinghua.edu.cn/g' /etc/apk/repositories;
-RUN if [ "$REGION" = "cn" ]; then \
-    echo "==> REGION: $REGION"; \
+RUN if [ "$BUILD_Region" = "cn" ]; then \
+    echo "==> BUILD_Region: $BUILD_Region"; \
     sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories; \
     go env -w GOPROXY="https://goproxy.cn,direct"; \
   fi
@@ -32,10 +32,10 @@ FROM alpine
 
 ARG APP=${APP}
 ARG TZ=${TZ:-Asia/Shanghai}
-ARG REGION=${REGION}
+ARG BUILD_Region=${BUILD_Region}
 
-RUN if [ "$REGION" = "cn" ]; then \
-    echo "==> REGION: $REGION"; \
+RUN if [ "$BUILD_Region" = "cn" ]; then \
+    echo "==> BUILD_Region: $BUILD_Region"; \
     sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories; \
   fi
 
