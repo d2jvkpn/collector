@@ -6,18 +6,18 @@ version: 0.2.0
 # configs/{{.APP_ENV}}.yaml
 config: |
   service_name: collector_local
-  #
+
   log:
     path: logs/collector.log
     size_mb: 256
-  #
+
   mongodb:
     uri: mongodb://USER:PASSWORD@localhost:27017
     min_pool_size: 20
     max_pool_size: 500
     timeout_secs: 5
     db: collector
-  #
+
   kafka:
     addrs: [localhost:9092]
     version: 3.4.0
@@ -26,20 +26,20 @@ config: |
     group_id: default
     # producer:
     key: key0001
-  #
+
   bp:
     count: 1000
     interval: 1m
-  #
+
   metrics:
     addr: :5011
     prometheus: true
     debug: true
-  #
+
   otel:
     enable: false
     addr: otel-collector:4317
-  #
+
   grpc:
     tls: false
     cert: configs/server.pem

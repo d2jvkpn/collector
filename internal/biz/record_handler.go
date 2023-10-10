@@ -7,7 +7,7 @@ import (
 	"time"
 
 	"github.com/IBM/sarama"
-	"github.com/d2jvkpn/gotk"
+	"github.com/d2jvkpn/gotk/impls"
 	"github.com/spf13/viper"
 	"github.com/valyala/fastjson"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -15,7 +15,7 @@ import (
 )
 
 type RecordHandler struct {
-	bp     *gotk.BatchProcess[*DataMsg]
+	bp     *impls.BatchProcess[*DataMsg]
 	logger *zap.Logger
 	db     *mongo.Database
 }
@@ -38,7 +38,7 @@ func NewRecordHandler(vp *viper.Viper) (handler *RecordHandler, err error) {
 
 	handler = &RecordHandler{}
 
-	handler.bp, err = gotk.NewBatchProcess[*DataMsg](count, interval, handler.InsertMany)
+	handler.bp, err = impls.NewBatchProcess[*DataMsg](count, interval, handler.InsertMany)
 	if err != nil {
 		return nil, err
 	}

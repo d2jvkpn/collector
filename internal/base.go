@@ -4,8 +4,8 @@ import (
 	// "fmt"
 
 	"github.com/d2jvkpn/collector/internal/biz"
-	"github.com/d2jvkpn/collector/pkg/kafka"
 
+	"github.com/d2jvkpn/gotk/kafka"
 	"github.com/spf13/viper"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.uber.org/zap"

@@ -4,10 +4,12 @@ go 1.21.2
 
 require (
 	github.com/IBM/sarama v1.41.2
-	github.com/d2jvkpn/gotk v0.0.0-20230925023207-f923b8bd92bb
-	github.com/d2jvkpn/gotk/cloud-logging v0.0.0-20230925023207-f923b8bd92bb
-	github.com/d2jvkpn/gotk/cloud-metrics v0.0.0-20230925023207-f923b8bd92bb
-	github.com/d2jvkpn/gotk/cloud-tracing v0.0.0-20230925023207-f923b8bd92bb
+	github.com/d2jvkpn/gotk v0.0.0-20231010013458-4692a2feec03
+	github.com/d2jvkpn/gotk/cloud-logging v0.0.0-20231010100316-d8cb0766d7e3
+	github.com/d2jvkpn/gotk/cloud-metrics v0.0.0-20231010013458-4692a2feec03
+	github.com/d2jvkpn/gotk/cloud-tracing v0.0.0-20231010013458-4692a2feec03
+	github.com/d2jvkpn/gotk/impls v0.0.0-20231010100316-d8cb0766d7e3
+	github.com/d2jvkpn/gotk/kafka v0.0.0-20231010100316-d8cb0766d7e3
 	github.com/grpc-ecosystem/go-grpc-middleware v1.4.0
 	github.com/spf13/viper v1.17.0
 	github.com/valyala/fastjson v1.6.4
@@ -22,12 +24,12 @@ require (
 
 require (
 	github.com/beorn7/perks v1.0.1 // indirect
-	github.com/bytedance/sonic v1.10.1 // indirect
+	github.com/bytedance/sonic v1.10.2 // indirect
 	github.com/cenkalti/backoff/v4 v4.2.1 // indirect
 	github.com/cespare/xxhash/v2 v2.2.0 // indirect
 	github.com/chenzhuoyu/base64x v0.0.0-20230717121745-296ad89f973d // indirect
 	github.com/chenzhuoyu/iasm v0.9.0 // indirect
-	github.com/d2jvkpn/gotk/ginx v0.0.0-20230925023207-f923b8bd92bb // indirect
+	github.com/d2jvkpn/gotk/ginx v0.0.0-20231010013458-4692a2feec03 // indirect
 	github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc // indirect
 	github.com/eapache/go-resiliency v1.4.0 // indirect
 	github.com/eapache/go-xerial-snappy v0.0.0-20230731223053-c322873962e3 // indirect
@@ -102,8 +104,10 @@ require (
 	golang.org/x/sync v0.4.0 // indirect
 	golang.org/x/sys v0.13.0 // indirect
 	golang.org/x/text v0.13.0 // indirect
-	google.golang.org/genproto/googleapis/api v0.0.0-20231002182017-d307bd883b97 // indirect
-	google.golang.org/genproto/googleapis/rpc v0.0.0-20231002182017-d307bd883b97 // indirect
+	google.golang.org/genproto/googleapis/api v0.0.0-20231009173412-8bfb1ae86b6c // indirect
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20231009173412-8bfb1ae86b6c // indirect
+	gopkg.in/alexcesaro/quotedprintable.v3 v3.0.0-20150716171945-2caba252f4dc // indirect
+	gopkg.in/gomail.v2 v2.0.0-20160411212932-81ebce5c23df // indirect
 	gopkg.in/ini.v1 v1.67.0 // indirect
 	gopkg.in/natefinch/lumberjack.v2 v2.2.1 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect

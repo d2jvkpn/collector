@@ -7,12 +7,12 @@ import (
 
 	"github.com/d2jvkpn/collector/internal/biz"
 	"github.com/d2jvkpn/collector/internal/settings"
-	"github.com/d2jvkpn/collector/pkg/kafka"
 	"github.com/d2jvkpn/collector/pkg/wrap"
 
 	"github.com/d2jvkpn/gotk"
 	"github.com/d2jvkpn/gotk/cloud-logging"
 	"github.com/d2jvkpn/gotk/cloud-tracing"
+	"github.com/d2jvkpn/gotk/kafka"
 	"github.com/spf13/viper"
 	"go.uber.org/zap"
 )
